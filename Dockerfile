@@ -7,7 +7,11 @@ ENV NODE_OPTIONS="--max-old-space-size=512"
 
 # Copy frontend package files
 COPY frontend/package*.json ./
-RUN npm install --legacy-peer-deps --no-optional
+
+# Install dependencies with memory optimizations
+# Clean npm cache first to reduce memory footprint
+RUN npm cache clean --force && \
+    npm install --legacy-peer-deps
 
 # Copy frontend source
 COPY frontend/ ./
