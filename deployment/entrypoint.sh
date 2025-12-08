@@ -13,6 +13,14 @@ echo "📝 Configuring nginx to listen on port $PORT..."
 envsubst '${PORT}' < /etc/nginx/sites-available/default > /tmp/nginx.conf
 mv /tmp/nginx.conf /etc/nginx/sites-available/default
 
+# Debug: Print environment status
+echo "🔍 Checking environment..."
+if [ -n "$DATABASE_URL" ]; then
+    echo "✅ DATABASE_URL is set: ${DATABASE_URL:0:20}..." 
+else
+    echo "❌ DATABASE_URL is NOT set!"
+fi
+
 # Wait for database (extract host from DATABASE_URL if provided)
 if [ -n "$DATABASE_URL" ]; then
     # For Render/cloud deployments with DATABASE_URL
