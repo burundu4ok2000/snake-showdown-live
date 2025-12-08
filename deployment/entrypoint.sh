@@ -26,8 +26,9 @@ if [ -n "$DATABASE_URL" ]; then
     # For Render/cloud deployments with DATABASE_URL
     echo "⏳ Waiting for database (from DATABASE_URL)..."
     
-    # Extract host from DATABASE_URL (postgresql://user:pass@HOST:PORT/dbname)
-    DB_HOST=$(echo $DATABASE_URL | sed -n 's/.*@\([^:]*\).*/\1/p')
+    # Extract host from DATABASE_URL using Python for reliability
+    # Handles formats like: postgres://user:pass@host:port/db and postgres://user:pass@host/db
+    DB_HOST=$(uv run python -c "from urllib.parse import urlparse; print(urlparse('${DATABASE_URL}').hostname)")
     
     # Wait for database to be ready
     echo "Connecting to database host: $DB_HOST"
