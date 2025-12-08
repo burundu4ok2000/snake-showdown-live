@@ -1,0 +1,26 @@
+services:
+  # Web Service (Frontend + Backend)
+  - type: web
+    name: snake-showdown
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: oregon
+    plan: starter
+    branch: main
+    healthCheckPath: /
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: snake-db
+          property: connectionString
+
+databases:
+  # PostgreSQL Database
+  - name: snake-db
+    databaseName: snake_showdown
+    user: snake_user
+    region: oregon
+    plan: starter
+    ipAllowList: []
