@@ -47,7 +47,7 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
       ctx.moveTo(i * CELL_SIZE, 0);
       ctx.lineTo(i * CELL_SIZE, size);
       ctx.stroke();
-      
+
       ctx.beginPath();
       ctx.moveTo(0, i * CELL_SIZE);
       ctx.lineTo(size, i * CELL_SIZE);
@@ -79,39 +79,39 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
     // Draw snake
     snake.forEach((segment, index) => {
       const isHead = index === 0;
-      
+
       if (isHead) {
         ctx.shadowColor = COLORS.snakeGlow;
         ctx.shadowBlur = 10;
       }
-      
+
       ctx.fillStyle = isHead ? COLORS.snakeHead : COLORS.snakeBody;
-      
+
       const padding = isHead ? 1 : 2;
       const radius = isHead ? 6 : 4;
-      
+
       // Draw rounded rectangle
       const x = segment.x * CELL_SIZE + padding;
       const y = segment.y * CELL_SIZE + padding;
       const w = CELL_SIZE - padding * 2;
       const h = CELL_SIZE - padding * 2;
-      
+
       ctx.beginPath();
       ctx.roundRect(x, y, w, h, radius);
       ctx.fill();
-      
+
       if (isHead) {
         ctx.shadowBlur = 0;
-        
+
         // Draw eyes
         ctx.fillStyle = '#fff';
         const eyeSize = 3;
         const eyeOffset = 4;
-        
-        let eye1X = x + w / 2 - eyeOffset;
-        let eye2X = x + w / 2 + eyeOffset;
-        let eyeY = y + h / 3;
-        
+
+        const eye1X = x + w / 2 - eyeOffset;
+        const eye2X = x + w / 2 + eyeOffset;
+        const eyeY = y + h / 3;
+
         ctx.beginPath();
         ctx.arc(eye1X, eyeY, eyeSize, 0, Math.PI * 2);
         ctx.arc(eye2X, eyeY, eyeSize, 0, Math.PI * 2);

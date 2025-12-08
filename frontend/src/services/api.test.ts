@@ -4,7 +4,9 @@ import { authApi, leaderboardApi, livePlayersApi } from '@/services/api';
 // Mock fetch globally
 global.fetch = vi.fn();
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockFetch = (data: any, status = 200) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (global.fetch as any).mockResolvedValueOnce({
     ok: status >= 200 && status < 300,
     status,
