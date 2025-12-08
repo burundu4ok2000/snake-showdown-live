@@ -2,9 +2,12 @@ FROM node:20-alpine AS frontend-build
 
 WORKDIR /app/frontend
 
+# Limit Node.js memory usage for npm install (fixes OOM on free tier)
+ENV NODE_OPTIONS="--max-old-space-size=512"
+
 # Copy frontend package files
 COPY frontend/package*.json ./
-RUN npm ci
+RUN npm install --legacy-peer-deps --no-optional
 
 # Copy frontend source
 COPY frontend/ ./
