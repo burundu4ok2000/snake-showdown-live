@@ -16,7 +16,25 @@ This project consists of two main components:
 
 ## Quick Start
 
-### Option 1: Docker Compose (Recommended for Production)
+### Option 1: Docker Compose - Single Container (Recommended for Production)
+
+**Requires**: Docker & Docker Compose
+
+```bash
+# Build and start (Frontend + Backend in one container + PostgreSQL)
+docker-compose -f docker-compose.single.yml up --build
+
+# Or run in background
+docker-compose -f docker-compose.single.yml up -d --build
+```
+
+Access the application:
+- **Application**: http://localhost (everything served from port 80)
+- **API Docs**: http://localhost/docs
+
+**📖 Full guide**: See [DEPLOYMENT_SINGLE.md](./DEPLOYMENT_SINGLE.md)
+
+### Option 2: Docker Compose - Multi-Container (Development)
 
 **Requires**: Docker & Docker Compose
 

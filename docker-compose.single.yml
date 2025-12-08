@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # Combined App (Frontend + Backend + Nginx)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: snake-app
+    environment:
+      DATABASE_URL: postgresql://snake_user:snake_password_change_me@db:5432/snake_showdown
+      SECRET_KEY: ${SECRET_KEY:-your-secret-key-change-in-production}
+    ports:
+      - "80:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - snake-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    container_name: snake-db
+    environment:
+      POSTGRES_DB: snake_showdown
+      POSTGRES_USER: snake_user
+      POSTGRES_PASSWORD: snake_password_change_me
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U snake_user -d snake_showdown" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - snake-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  snake-network:
+    driver: bridge

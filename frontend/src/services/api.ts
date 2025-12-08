@@ -4,7 +4,8 @@
 
 import { GameMode, LeaderboardEntry, LivePlayer, User } from '@/types/game';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Use /api prefix for production (nginx proxy), or env variable
+const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const getHeaders = () => {
   const token = localStorage.getItem('token');
