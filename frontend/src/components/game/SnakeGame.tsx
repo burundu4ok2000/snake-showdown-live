@@ -3,6 +3,7 @@ import { useSnakeGame } from '@/hooks/useSnakeGame';
 import { GameCanvas } from './GameCanvas';
 import { GameControls } from './GameControls';
 import { GameOverlay } from './GameOverlay';
+import { MobileControls } from './MobileControls';
 
 export function SnakeGame() {
   const {
@@ -18,16 +19,24 @@ export function SnakeGame() {
 
   return (
     <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-8">
-      <div className="relative">
-        <GameCanvas gameState={gameState} />
-        <GameOverlay
-          status={gameState.status}
-          score={gameState.score}
-          onStart={startGame}
-          onResume={resumeGame}
+      <div className="relative flex flex-col gap-4">
+        <div className="relative">
+          <GameCanvas gameState={gameState} />
+          <GameOverlay
+            status={gameState.status}
+            score={gameState.score}
+            onStart={startGame}
+            onResume={resumeGame}
+          />
+        </div>
+
+        {/* Mobile Controls - visible only on small screens */}
+        <MobileControls
+          onMove={handleDirectionChange}
+          className="lg:hidden"
         />
       </div>
-      
+
       <GameControls
         status={gameState.status}
         mode={gameState.mode}
