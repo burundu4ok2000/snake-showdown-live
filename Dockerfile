@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y \
     postgresql-client \
     nginx \
     supervisor \
+    gettext-base \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv
@@ -50,8 +51,11 @@ COPY deployment/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY deployment/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# Set default PORT (Render will override this)
+ENV PORT=80
+
 # Expose port
-EXPOSE 80
+EXPOSE $PORT
 
 # Use entrypoint
 ENTRYPOINT ["/entrypoint.sh"]

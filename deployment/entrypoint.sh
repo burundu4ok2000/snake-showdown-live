@@ -5,9 +5,17 @@ set -e
 
 echo "🚀 Starting Snake Showdown Live..."
 
+# Set default PORT if not provided (for local Docker)
+export PORT=${PORT:-80}
+
+# Substitute PORT in nginx config
+echo "📝 Configuring nginx to listen on port $PORT..."
+envsubst '${PORT}' < /etc/nginx/sites-available/default > /tmp/nginx.conf
+mv /tmp/nginx.conf /etc/nginx/sites-available/default
+
 # Wait for database
 echo "⏳ Waiting for database..."
-until pg_isready -h db -U snake_user -d snake_showdown; do
+until pg_isready -h db -U snake_user -d snake_showdown 2>/dev/null; do
   echo "Database is unavailable - sleeping"
   sleep 2
 done
