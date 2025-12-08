@@ -10,3 +10,5 @@ Useful Commands
 
     # Run Python files
     uv run python <PYTHON-FILE>
+
+    regularly commit code to github 

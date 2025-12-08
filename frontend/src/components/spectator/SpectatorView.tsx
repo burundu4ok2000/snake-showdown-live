@@ -3,10 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { GameCanvas } from '@/components/game/GameCanvas';
-import { livePlayersApi } from '@/services/api';
 import { LivePlayer, GameState } from '@/types/game';
 import { Eye, X, Radio } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { simulatePlayerMove } from '@/lib/simulation';
 
 interface SpectatorViewProps {
   player: LivePlayer;
@@ -19,12 +19,9 @@ export function SpectatorView({ player, onClose, className }: SpectatorViewProps
   const intervalRef = useRef<number | null>(null);
 
   useEffect(() => {
-    // Simulate the player's game
-    const simulateGame = async () => {
-      const updated = await livePlayersApi.simulatePlayerMove(player.id);
-      if (updated) {
-        setCurrentPlayer(updated);
-      }
+    // Simulate the player's game locally
+    const simulateGame = () => {
+      setCurrentPlayer(prev => simulatePlayerMove(prev));
     };
 
     intervalRef.current = window.setInterval(simulateGame, 150);
@@ -65,7 +62,7 @@ export function SpectatorView({ player, onClose, className }: SpectatorViewProps
       </CardHeader>
       <CardContent className="flex flex-col items-center gap-4">
         <GameCanvas gameState={gameState} />
-        
+
         <div className="flex items-center gap-4">
           <div className="text-center">
             <p className="text-xs text-muted-foreground uppercase">Mode</p>
