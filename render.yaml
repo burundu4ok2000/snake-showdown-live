@@ -5,7 +5,7 @@ services:
     env: docker
     dockerfilePath: ./Dockerfile
     region: oregon
-    plan: starter
+    plan: free # Changed to free tier
     branch: main
     healthCheckPath: /
     envVars:
@@ -22,5 +22,5 @@ databases:
     databaseName: snake_showdown
     user: snake_user
     region: oregon
-    plan: starter
+    plan: free # Changed to free tier
     ipAllowList: []

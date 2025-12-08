@@ -7,7 +7,7 @@
 - **Free SSL**: Automatic HTTPS
 - **Auto-deploy**: Push to GitHub → Auto deploys
 
-**Cost**: $14/month ($7 web service + $7 database)
+**Cost**: Free (Hobby) or $14/month (Starter)
 
 ---
 
@@ -15,7 +15,7 @@
 
 - ✅ GitHub account
 - ✅ Code pushed to GitHub (already done ✅)
-- ✅ Credit card (for paid plan)
+- ✅ **No credit card required** for Free plan!
 
 ---
 
