@@ -20,28 +20,38 @@ def test_signup():
     assert "token" in data
 
 def test_login():
-    # Helper to ensure user exists
+    # Create user first
     client.post(
         "/auth/signup",
         json={"username": "loginuser", "email": "login@example.com", "password": "password123"}
     )
     
+    # Login
     response = client.post(
         "/auth/login",
         json={"email": "login@example.com", "password": "password123"}
     )
     assert response.status_code == 200
     data = response.json()
-    assert data["token"] == "mock-jwt-token"
+    # Verify we got a JWT token (starts with eyJ)
+    assert data["token"].startswith("eyJ")
+    assert len(data["token"]) > 50  # JWT tokens are long
 
 def test_get_me():
-    # Use the mock token
+    # Create user and get real token
+    signup_response = client.post(
+        "/auth/signup",
+        json={"username": "meuser", "email": "me@example.com", "password": "password123"}
+    )
+    token = signup_response.json()["token"]
+    
+    # Use real token
     response = client.get(
         "/auth/me",
-        headers={"Authorization": "Bearer mock-jwt-token"}
+        headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 200
-    assert "username" in response.json()
+    assert response.json()["username"] == "meuser"
 
 def test_leaderboard():
     response = client.get("/leaderboard")
@@ -49,10 +59,18 @@ def test_leaderboard():
     assert isinstance(response.json(), list)
 
 def test_submit_score():
+    # Create user and get real token
+    signup_response = client.post(
+        "/auth/signup",
+        json={"username": "scorer", "email": "scorer@example.com", "password": "password123"}
+    )
+    token = signup_response.json()["token"]
+    
+    # Submit score with real token
     response = client.post(
         "/leaderboard",
         json={"score": 100, "mode": GameMode.WALLS},
-        headers={"Authorization": "Bearer mock-jwt-token"}
+        headers={"Authorization": f"Bearer {token}"}
     )
     assert response.status_code == 201
     data = response.json()
