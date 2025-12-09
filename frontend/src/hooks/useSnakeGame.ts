@@ -150,7 +150,18 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through', initialDiff
       return;
     }
 
-    const GAME_SPEED = getDifficultyConfig(gameState.difficulty).speed;
+    let GAME_SPEED = getDifficultyConfig(gameState.difficulty).speed;
+
+    // Apply speed power-up effects
+    const hasSpeedBoost = gameState.activeEffects.some(e => e.type === 'speed-boost');
+    const hasSlowMotion = gameState.activeEffects.some(e => e.type === 'slow-motion');
+
+    if (hasSpeedBoost) {
+      GAME_SPEED = GAME_SPEED * 0.67; // 1.5x faster (lower delay)
+    } else if (hasSlowMotion) {
+      GAME_SPEED = GAME_SPEED * 1.5; // 0.67x speed (higher delay)
+    }
+
     let lastTime = 0;
 
     const gameLoop = (currentTime: number) => {

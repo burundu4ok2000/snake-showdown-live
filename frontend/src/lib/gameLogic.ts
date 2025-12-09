@@ -101,8 +101,32 @@ export function moveSnake(state: GameState): GameState {
     state.gridSize
   );
 
-  // Check for collision
-  if (checkCollision(newHead, state.snake, state.mode, state.gridSize)) {
+  // Check for invincibility (star effect)
+  const hasInvincibility = state.activeEffects.some(e => e.type === 'star');
+
+  // Check for collision (ignore self-collision if invincible)
+  const checkSelfCollision = !hasInvincibility;
+  const hasCollision = checkSelfCollision
+    ? checkCollision(newHead, state.snake, state.mode, state.gridSize)
+    : false; // Skip collision check if invincible
+
+  if (hasCollision) {
+    // Check for shield
+    const shieldIndex = state.activeEffects.findIndex(e => e.type === 'shield');
+
+    if (shieldIndex >= 0) {
+      // Shield blocks the hit! Remove shield and continue
+      const newActiveEffects = [...state.activeEffects];
+      newActiveEffects.splice(shieldIndex, 1);
+
+      return {
+        ...state,
+        activeEffects: newActiveEffects,
+        // Don't game over, shield saved us!
+      };
+    }
+
+    // No shield, game over
     return {
       ...state,
       status: 'game-over',
