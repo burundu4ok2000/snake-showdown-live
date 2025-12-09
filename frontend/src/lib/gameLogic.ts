@@ -1,4 +1,5 @@
 import { Direction, GameMode, GameState, Position, GameDifficulty } from '@/types/game';
+import { getDifficultyConfig } from './difficultyConfig';
 
 export const GRID_SIZE = 25;
 export const INITIAL_SNAKE_LENGTH = 3;
@@ -111,7 +112,10 @@ export function moveSnake(state: GameState): GameState {
   // Check if food is eaten
   if (newHead.x === state.food.x && newHead.y === state.food.y) {
     newFood = generateFood(newSnake);
-    newScore += 10;
+    // Apply difficulty multiplier to score
+    const basePoints = 10;
+    const multiplier = getDifficultyConfig(state.difficulty).scoreMultiplier;
+    newScore += Math.floor(basePoints * multiplier);
   } else {
     // Remove tail if no food eaten
     newSnake.pop();
