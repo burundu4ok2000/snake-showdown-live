@@ -5,7 +5,7 @@ import { authApi, leaderboardApi, livePlayersApi } from '@/services/api';
 global.fetch = vi.fn();
 
 // Create a proper localStorage mock with in-memory storage
-const createLocalStorageMock = () => {
+const createLocalStorageMock = (): Storage => {
   let store: Record<string, string> = {};
 
   return {
@@ -13,6 +13,11 @@ const createLocalStorageMock = () => {
     setItem: (key: string, value: string) => { store[key] = value; },
     removeItem: (key: string) => { delete store[key]; },
     clear: () => { store = {}; },
+    get length() { return Object.keys(store).length; },
+    key: (index: number) => {
+      const keys = Object.keys(store);
+      return keys[index] || null;
+    },
   };
 };
 
@@ -31,7 +36,7 @@ const mockFetch = (data: any, status = 200) => {
 describe('authApi', () => {
   beforeEach(() => {
     // Reset localStorage with a fresh mock
-    global.localStorage = createLocalStorageMock() as any;
+    global.localStorage = createLocalStorageMock();
     authApi.clearSession();
     vi.clearAllMocks();
   });
