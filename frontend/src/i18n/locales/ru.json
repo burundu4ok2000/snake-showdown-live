@@ -23,7 +23,10 @@
     "gameOver": "Игра окончена",
     "newHighScore": "Новый рекорд!",
     "tapToStart": "Нажми чтобы начать",
-    "pressSpace": "Нажми Пробел чтобы начать"
+    "pressSpace": "Нажми Пробел чтобы начать",
+    "difficulty": "Сложность",
+    "scoreMultiplier": "очки",
+    "reset": "Сбросить игру"
   },
   "modes": {
     "title": "Режим игры",
