@@ -18,9 +18,9 @@ export function SnakeGame() {
   } = useSnakeGame();
 
   return (
-    <div className="flex flex-col lg:flex-row items-center lg:items-start gap-6 lg:gap-8">
-      <div className="relative flex flex-col gap-4">
-        <div className="relative">
+    <div className="flex flex-col gap-6 w-full max-w-3xl mx-auto">
+      <div className="relative flex flex-col gap-4 w-full">
+        <div className="relative w-full flex justify-center">
           <GameCanvas gameState={gameState} />
           <GameOverlay
             status={gameState.status}
@@ -30,7 +30,7 @@ export function SnakeGame() {
           />
         </div>
 
-        {/* Mobile Controls - visible only on small screens */}
+        {/* Mobile Controls - visible only on touch devices */}
         <MobileControls
           onMove={handleDirectionChange}
           className="lg:hidden"
@@ -47,7 +47,7 @@ export function SnakeGame() {
         onResume={resumeGame}
         onReset={resetGame}
         onModeChange={setMode}
-        className="w-full lg:max-w-xs"
+        className="w-full"
       />
     </div>
   );

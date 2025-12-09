@@ -30,28 +30,27 @@ export function GameControls({
   className,
 }: GameControlsProps) {
   return (
-    <div className={cn("flex flex-col gap-6 p-6 glass-card rounded-xl", className)}>
-      {/* Score Display */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-black/20 border border-white/5">
-          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Score</p>
-          <p className="text-3xl font-bold text-primary font-mono">{score}</p>
+    <div className={cn("grid md:grid-cols-4 gap-4 p-4 glass-card rounded-xl items-center", className)}>
+      {/* Score Display - Takes 1 column */}
+      <div className="flex flex-col md:flex-row gap-4 md:col-span-2 lg:col-span-1">
+        <div className="flex-1 flex flex-col items-center justify-center p-3 rounded-lg bg-black/20 border border-white/5">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Score</p>
+          <p className="text-2xl font-bold text-primary font-mono">{score}</p>
         </div>
-        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-black/20 border border-white/5">
-          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">High Score</p>
-          <p className="text-3xl font-bold text-accent font-mono">{highScore}</p>
+        <div className="flex-1 flex flex-col items-center justify-center p-3 rounded-lg bg-black/20 border border-white/5">
+          <p className="text-[10px] text-muted-foreground uppercase tracking-widest mb-1">Best</p>
+          <p className="text-2xl font-bold text-accent font-mono">{highScore}</p>
         </div>
       </div>
 
-      {/* Mode Selector */}
-      <div className="space-y-2">
-        <p className="text-xs text-muted-foreground uppercase tracking-widest pl-1">Game Mode</p>
-        <div className="flex bg-black/20 p-1 rounded-lg border border-white/5">
+      {/* Mode Selector - Takes 1 column */}
+      <div className="space-y-1 md:col-span-2 lg:col-span-1">
+        <div className="flex bg-black/20 p-1 rounded-lg border border-white/5 h-14 items-center">
           <Button
             variant="ghost"
             size="sm"
             className={cn(
-              "flex-1 rounded-md transition-all",
+              "flex-1 h-full rounded-md transition-all text-xs lg:text-sm",
               mode === 'pass-through' ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
             )}
             onClick={() => onModeChange('pass-through')}
@@ -63,7 +62,7 @@ export function GameControls({
             variant="ghost"
             size="sm"
             className={cn(
-              "flex-1 rounded-md transition-all",
+              "flex-1 h-full rounded-md transition-all text-xs lg:text-sm",
               mode === 'walls' ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
             )}
             onClick={() => onModeChange('walls')}
@@ -74,20 +73,20 @@ export function GameControls({
         </div>
       </div>
 
-      {/* Game Actions */}
-      <div className="flex gap-3">
+      {/* Game Actions - Takes remaining columns */}
+      <div className="flex gap-2 md:col-span-4 lg:col-span-2">
         {status === 'idle' || status === 'game-over' ? (
-          <Button onClick={onStart} className="flex-1 h-12 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+          <Button onClick={onStart} className="flex-1 h-14 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
             <Play className="w-5 h-5 mr-2 fill-current" />
-            Start
+            Start Game
           </Button>
         ) : status === 'playing' ? (
-          <Button onClick={onPause} variant="secondary" className="flex-1 h-12 text-lg font-semibold bg-white/10 hover:bg-white/20 text-white">
+          <Button onClick={onPause} variant="secondary" className="flex-1 h-14 text-lg font-semibold bg-white/10 hover:bg-white/20 text-white">
             <Pause className="w-5 h-5 mr-2 fill-current" />
             Pause
           </Button>
         ) : (
-          <Button onClick={onResume} className="flex-1 h-12 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+          <Button onClick={onResume} className="flex-1 h-14 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
             <Play className="w-5 h-5 mr-2 fill-current" />
             Resume
           </Button>
@@ -97,7 +96,7 @@ export function GameControls({
           onClick={onReset}
           variant="outline"
           size="icon"
-          className="h-12 w-12 border-white/10 bg-white/5 hover:bg-destructive hover:border-destructive hover:text-white transition-colors"
+          className="h-14 w-14 border-white/10 bg-white/5 hover:bg-destructive hover:border-destructive hover:text-white transition-colors"
           disabled={status === 'idle'}
           title="Reset Game"
         >
@@ -105,10 +104,10 @@ export function GameControls({
         </Button>
       </div>
 
-      {/* Instructions */}
-      <div className="text-xs text-muted-foreground text-center space-y-1 pt-2 border-t border-white/5">
-        <p>Use <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">Arrow Keys</kbd> or <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">WASD</kbd> to move</p>
-        <p>Press <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">Space</kbd> to pause</p>
+      {/* Instructions - Hidden on small screens, integrated nicely */}
+      <div className="hidden lg:flex md:col-span-4 justify-between text-[10px] text-muted-foreground px-2 border-t border-white/5 pt-2 mt-1">
+        <span>Use <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">Arrows</kbd> or <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">WASD</kbd> to move</span>
+        <span>Press <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">Space</kbd> to pause</span>
       </div>
     </div>
   );
