@@ -1,57 +1,59 @@
 {
-    "nav": {
-        "home": "Accueil",
-        "leaderboard": "Classement",
-        "howToPlay": "Comment jouer",
-        "spectate": "Spectateurs",
-        "login": "Connexion",
-        "logout": "Déconnexion",
-        "profile": "Profil"
-    },
-    "game": {
-        "title": "Arène des Serpents",
-        "subtitle": "Jeu de serpent multijoueur épique",
-        "playNow": "Jouer maintenant",
-        "start": "Démarrer",
-        "pause": "Pause",
-        "resume": "Reprendre",
-        "restart": "Recommencer",
-        "score": "Score",
-        "highScore": "Meilleur score",
-        "gameOver": "Partie terminée",
-        "newHighScore": "Nouveau record!",
-        "tapToStart": "Appuyez pour commencer"
-    },
-    "modes": {
-        "title": "Mode de jeu",
-        "passThrough": "Traversée",
-        "walls": "Avec murs",
-        "passThroughDesc": "Traversez les bords",
-        "wallsDesc": "Toucher les murs = défaite"
-    },
-    "difficulty": {
-        "title": "Difficulté",
-        "easy": "Facile",
-        "normal": "Normal",
-        "hard": "Difficile",
-        "nightmare": "Cauchemar",
-        "impossible": "Impossible"
-    },
-    "powerups": {
-        "speedBoost": "Accélération",
-        "slowMotion": "Ralenti",
-        "shield": "Bouclier",
-        "doublePoints": "Points doubles",
-        "invincibility": "Invincibilité"
-    },
-    "controls": {
-        "title": "Contrôles",
-        "keyboard": "Utilisez WASD ou les flèches",
-        "mobile": "Utilisez le D-pad à l'écran",
-        "pause": "Appuyez sur Espace pour pause"
-    },
-    "footer": {
-        "madeWith": "Fait avec",
-        "by": "par"
-    }
+  "nav": {
+    "home": "Accueil",
+    "leaderboard": "Classement",
+    "howToPlay": "Comment jouer",
+    "spectate": "Spectateurs",
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "profile": "Profil",
+    "myScores": "Mes scores",
+    "signIn": "Connexion"
+  },
+  "game": {
+    "title": "Arène des Serpents",
+    "subtitle": "Jeu de serpent multijoueur épique",
+    "playNow": "Jouer maintenant",
+    "start": "Démarrer",
+    "pause": "Pause",
+    "resume": "Reprendre",
+    "restart": "Recommencer",
+    "score": "Score",
+    "highScore": "Meilleur score",
+    "gameOver": "Partie terminée",
+    "newHighScore": "Nouveau record!",
+    "tapToStart": "Appuyez pour commencer"
+  },
+  "modes": {
+    "title": "Mode de jeu",
+    "passThrough": "Traversée",
+    "walls": "Avec murs",
+    "passThroughDesc": "Traversez les bords",
+    "wallsDesc": "Toucher les murs = défaite"
+  },
+  "difficulty": {
+    "title": "Difficulté",
+    "easy": "Facile",
+    "normal": "Normal",
+    "hard": "Difficile",
+    "nightmare": "Cauchemar",
+    "impossible": "Impossible"
+  },
+  "powerups": {
+    "speedBoost": "Accélération",
+    "slowMotion": "Ralenti",
+    "shield": "Bouclier",
+    "doublePoints": "Points doubles",
+    "invincibility": "Invincibilité"
+  },
+  "controls": {
+    "title": "Contrôles",
+    "keyboard": "Utilisez WASD ou les flèches",
+    "mobile": "Utilisez le D-pad à l'écran",
+    "pause": "Appuyez sur Espace pour pause"
+  },
+  "footer": {
+    "madeWith": "Fait avec",
+    "by": "par"
+  }
 }

@@ -1,57 +1,59 @@
 {
-    "nav": {
-        "home": "Home",
-        "leaderboard": "Leaderboard",
-        "howToPlay": "How to Play",
-        "spectate": "Spectate",
-        "login": "Login",
-        "logout": "Logout",
-        "profile": "Profile"
-    },
-    "game": {
-        "title": "Snake Arena",
-        "subtitle": "Epic multiplayer snake game",
-        "playNow": "Play Now",
-        "start": "Start",
-        "pause": "Pause",
-        "resume": "Resume",
-        "restart": "Restart",
-        "score": "Score",
-        "highScore": "High Score",
-        "gameOver": "Game Over",
-        "newHighScore": "New High Score!",
-        "tapToStart": "Tap to Start"
-    },
-    "modes": {
-        "title": "Game Mode",
-        "passThrough": "Pass-Through",
-        "walls": "Walls",
-        "passThroughDesc": "Cross edges to appear on opposite side",
-        "wallsDesc": "Hit walls and it's game over"
-    },
-    "difficulty": {
-        "title": "Difficulty",
-        "easy": "Easy",
-        "normal": "Normal",
-        "hard": "Hard",
-        "nightmare": "Nightmare",
-        "impossible": "Impossible"
-    },
-    "powerups": {
-        "speedBoost": "Speed Boost",
-        "slowMotion": "Slow Motion",
-        "shield": "Shield",
-        "doublePoints": "Double Points",
-        "invincibility": "Invincibility"
-    },
-    "controls": {
-        "title": "Controls",
-        "keyboard": "Use WASD or Arrow Keys",
-        "mobile": "Use on-screen D-pad",
-        "pause": "Press Space to pause"
-    },
-    "footer": {
-        "madeWith": "Made with",
-        "by": "by"
-    }
+  "nav": {
+    "home": "Home",
+    "leaderboard": "Leaderboard",
+    "howToPlay": "How to Play",
+    "spectate": "Spectate",
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile",
+    "myScores": "My Scores",
+    "signIn": "Sign In"
+  },
+  "game": {
+    "title": "Snake Arena",
+    "subtitle": "Epic multiplayer snake game",
+    "playNow": "Play Now",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "restart": "Restart",
+    "score": "Score",
+    "highScore": "High Score",
+    "gameOver": "Game Over",
+    "newHighScore": "New High Score!",
+    "tapToStart": "Tap to Start"
+  },
+  "modes": {
+    "title": "Game Mode",
+    "passThrough": "Pass-Through",
+    "walls": "Walls",
+    "passThroughDesc": "Cross edges to appear on opposite side",
+    "wallsDesc": "Hit walls and it's game over"
+  },
+  "difficulty": {
+    "title": "Difficulty",
+    "easy": "Easy",
+    "normal": "Normal",
+    "hard": "Hard",
+    "nightmare": "Nightmare",
+    "impossible": "Impossible"
+  },
+  "powerups": {
+    "speedBoost": "Speed Boost",
+    "slowMotion": "Slow Motion",
+    "shield": "Shield",
+    "doublePoints": "Double Points",
+    "invincibility": "Invincibility"
+  },
+  "controls": {
+    "title": "Controls",
+    "keyboard": "Use WASD or Arrow Keys",
+    "mobile": "Use on-screen D-pad",
+    "pause": "Press Space to pause"
+  },
+  "footer": {
+    "madeWith": "Made with",
+    "by": "by"
+  }
 }

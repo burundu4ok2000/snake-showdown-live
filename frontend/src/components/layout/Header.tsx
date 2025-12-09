@@ -38,30 +38,31 @@ export function Header() {
           <Button variant="ghost" asChild>
             <Link to="/" className="gap-2">
               <Gamepad2 className="w-4 h-4" />
-              Play
+              {t('nav.home')}
             </Link>
           </Button>
           <Button variant="ghost" asChild>
             <Link to="/leaderboard" className="gap-2">
               <Trophy className="w-4 h-4" />
-              Leaderboard
+              {t('nav.leaderboard')}
             </Link>
           </Button>
           <Button variant="ghost" asChild>
             <Link to="/how-to-play" className="gap-2">
               <BookOpen className="w-4 h-4" />
-              How to Play
+              {t('nav.howToPlay')}
             </Link>
           </Button>
           <Button variant="ghost" asChild>
             <Link to="/spectate" className="gap-2">
               <Users className="w-4 h-4" />
-              Spectate
+              {t('nav.spectate')}
             </Link>
           </Button>
         </nav>
 
         <div className="flex items-center gap-2">
+          <LanguageSelector />
           <SoundToggle />
           {isAuthenticated ? (
             <DropdownMenu>
@@ -74,20 +75,20 @@ export function Header() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="glass border-white/10">
-                <DropdownMenuItem className="gap-2 cursor-pointer focus:bg-primary/20">
+                <DropdownMenuItem className="gap-2 cursor-pointer focus:bg-primary/20" onClick={() => navigate('/profile')}>
                   <User className="w-4 h-4" />
-                  Profile
+                  {t('nav.profile')}
                 </DropdownMenuItem>
                 <DropdownMenuItem className="gap-2 cursor-pointer focus:bg-primary/20" asChild>
                   <Link to="/leaderboard">
                     <Trophy className="w-4 h-4" />
-                    My Scores
+                    {t('nav.myScores')}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator className="bg-white/10" />
                 <DropdownMenuItem className="gap-2 text-destructive cursor-pointer focus:bg-destructive/10" onClick={handleLogout}>
                   <LogOut className="w-4 h-4" />
-                  Logout
+                  {t('nav.logout')}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -95,7 +96,7 @@ export function Header() {
             <Button asChild className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
               <Link to="/auth" className="gap-2">
                 <LogIn className="w-4 h-4" />
-                Sign In
+                {t('nav.signIn')}
               </Link>
             </Button>
           )}
