@@ -4,6 +4,7 @@ import { GameCanvas } from './GameCanvas';
 import { GameControls } from './GameControls';
 import { GameOverlay } from './GameOverlay';
 import { MobileControls } from './MobileControls';
+import { getDifficultyConfig } from '@/lib/difficultyConfig';
 
 export function SnakeGame() {
   const {
@@ -18,6 +19,8 @@ export function SnakeGame() {
     handleDirectionChange,
   } = useSnakeGame();
 
+  const difficultyConfig = getDifficultyConfig(gameState.difficulty);
+
   return (
     <div className="flex flex-col gap-6 w-full max-w-3xl mx-auto">
       <div className="relative flex flex-col gap-4 w-full">
@@ -29,6 +32,21 @@ export function SnakeGame() {
             onStart={startGame}
             onResume={resumeGame}
           />
+
+          {/* Difficulty Badge */}
+          {gameState.status === 'playing' && (
+            <div className="absolute top-2 right-2 bg-black/60 backdrop-blur-md border border-white/10 rounded-lg px-3 py-1 flex items-center gap-2">
+              <span className="text-lg">{difficultyConfig.emoji}</span>
+              <div className="flex flex-col items-start">
+                <span className={`text-xs font-semibold ${difficultyConfig.color}`}>
+                  {difficultyConfig.label}
+                </span>
+                <span className="text-[10px] text-muted-foreground">
+                  ×{difficultyConfig.scoreMultiplier}
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Mobile Controls - visible only on touch devices */}

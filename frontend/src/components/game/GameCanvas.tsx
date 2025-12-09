@@ -90,12 +90,16 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
     snake.forEach((segment, index) => {
       const isHead = index === 0;
 
+      // Calculate alpha for trail effect (fade from head to tail)
+      const alpha = 1 - (index / snake.length) * 0.4; // Fades to 60% opacity at tail
+
       if (isHead) {
         ctx.shadowColor = COLORS.snakeGlow;
         ctx.shadowBlur = 10;
       }
 
       ctx.fillStyle = isHead ? COLORS.snakeHead : COLORS.snakeBody;
+      ctx.globalAlpha = alpha;
 
       const padding = isHead ? 1 : 2;
       const radius = isHead ? 6 : 4;
@@ -109,6 +113,8 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
       ctx.beginPath();
       ctx.roundRect(x, y, w, h, radius);
       ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1; // Reset alpha
 
       if (isHead) {
         ctx.shadowBlur = 0;
