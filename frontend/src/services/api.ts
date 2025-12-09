@@ -105,12 +105,12 @@ export const authApi = {
 // Leaderboard API
 export const leaderboardApi = {
   async getLeaderboard(mode?: GameMode): Promise<LeaderboardEntry[]> {
-    const url = new URL(`${API_URL}/leaderboard`);
+    let url = `${API_URL}/leaderboard`;
     if (mode) {
-      url.searchParams.append('mode', mode);
+      url += `?mode=${encodeURIComponent(mode)}`;
     }
 
-    const response = await fetch(url.toString(), {
+    const response = await fetch(url, {
       headers: getHeaders(),
     });
     return handleResponse(response);

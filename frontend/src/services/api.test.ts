@@ -1,8 +1,20 @@
-import { describe, it, expect, beforeEach, vi, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { authApi, leaderboardApi, livePlayersApi } from '@/services/api';
 
 // Mock fetch globally
 global.fetch = vi.fn();
+
+// Create a proper localStorage mock with in-memory storage
+const createLocalStorageMock = () => {
+  let store: Record<string, string> = {};
+
+  return {
+    getItem: (key: string) => store[key] || null,
+    setItem: (key: string, value: string) => { store[key] = value; },
+    removeItem: (key: string) => { delete store[key]; },
+    clear: () => { store = {}; },
+  };
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockFetch = (data: any, status = 200) => {
@@ -18,10 +30,12 @@ const mockFetch = (data: any, status = 200) => {
 
 describe('authApi', () => {
   beforeEach(() => {
-    localStorage.clear();
+    // Reset localStorage with a fresh mock
+    global.localStorage = createLocalStorageMock() as any;
     authApi.clearSession();
     vi.clearAllMocks();
   });
+
 
   describe('login', () => {
     it('should login and return user with token', async () => {

@@ -58,6 +58,8 @@ jobs:
 
     - name: Run Tests
       # Vitest needs 'run' argument to not run in watch mode
+      env:
+        VITE_API_URL: http://localhost:8000/api
       run: npm test -- run
 
     - name: Build Check
