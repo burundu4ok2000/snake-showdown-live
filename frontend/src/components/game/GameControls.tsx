@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { GameMode, GameStatus } from '@/types/game';
-import { Play, Pause, RotateCcw, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Play, Pause, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface GameControlsProps {
@@ -14,7 +14,6 @@ interface GameControlsProps {
   onResume: () => void;
   onReset: () => void;
   onModeChange: (mode: GameMode) => void;
-  onDirectionChange: (direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT') => void;
   className?: string;
 }
 
@@ -28,110 +27,88 @@ export function GameControls({
   onResume,
   onReset,
   onModeChange,
-  onDirectionChange,
   className,
 }: GameControlsProps) {
   return (
-    <div className={cn("flex flex-col gap-4", className)}>
+    <div className={cn("flex flex-col gap-6 p-6 glass-card rounded-xl", className)}>
       {/* Score Display */}
-      <div className="flex justify-between items-center px-4 py-3 bg-card rounded-lg border border-border">
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground uppercase tracking-wide">Score</p>
-          <p className="text-2xl font-bold text-primary font-mono">{score}</p>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-black/20 border border-white/5">
+          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Score</p>
+          <p className="text-3xl font-bold text-primary font-mono">{score}</p>
         </div>
-        <div className="text-center">
-          <p className="text-xs text-muted-foreground uppercase tracking-wide">High Score</p>
-          <p className="text-2xl font-bold text-accent-foreground font-mono">{highScore}</p>
+        <div className="flex flex-col items-center justify-center p-4 rounded-lg bg-black/20 border border-white/5">
+          <p className="text-xs text-muted-foreground uppercase tracking-widest mb-1">High Score</p>
+          <p className="text-3xl font-bold text-accent font-mono">{highScore}</p>
         </div>
       </div>
 
       {/* Mode Selector */}
-      <div className="flex gap-2">
-        <Button
-          variant={mode === 'pass-through' ? 'default' : 'outline'}
-          size="sm"
-          className="flex-1"
-          onClick={() => onModeChange('pass-through')}
-          disabled={status === 'playing'}
-        >
-          Pass-Through
-        </Button>
-        <Button
-          variant={mode === 'walls' ? 'default' : 'outline'}
-          size="sm"
-          className="flex-1"
-          onClick={() => onModeChange('walls')}
-          disabled={status === 'playing'}
-        >
-          Walls
-        </Button>
+      <div className="space-y-2">
+        <p className="text-xs text-muted-foreground uppercase tracking-widest pl-1">Game Mode</p>
+        <div className="flex bg-black/20 p-1 rounded-lg border border-white/5">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "flex-1 rounded-md transition-all",
+              mode === 'pass-through' ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+            )}
+            onClick={() => onModeChange('pass-through')}
+            disabled={status === 'playing'}
+          >
+            Classic
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "flex-1 rounded-md transition-all",
+              mode === 'walls' ? "bg-primary text-primary-foreground shadow-md" : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+            )}
+            onClick={() => onModeChange('walls')}
+            disabled={status === 'playing'}
+          >
+            Walls
+          </Button>
+        </div>
       </div>
 
       {/* Game Actions */}
-      <div className="flex gap-2">
+      <div className="flex gap-3">
         {status === 'idle' || status === 'game-over' ? (
-          <Button onClick={onStart} className="flex-1 gap-2">
-            <Play className="w-4 h-4" />
-            {status === 'game-over' ? 'Play Again' : 'Start Game'}
+          <Button onClick={onStart} className="flex-1 h-12 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+            <Play className="w-5 h-5 mr-2 fill-current" />
+            Start
           </Button>
         ) : status === 'playing' ? (
-          <Button onClick={onPause} variant="secondary" className="flex-1 gap-2">
-            <Pause className="w-4 h-4" />
+          <Button onClick={onPause} variant="secondary" className="flex-1 h-12 text-lg font-semibold bg-white/10 hover:bg-white/20 text-white">
+            <Pause className="w-5 h-5 mr-2 fill-current" />
             Pause
           </Button>
         ) : (
-          <Button onClick={onResume} className="flex-1 gap-2">
-            <Play className="w-4 h-4" />
+          <Button onClick={onResume} className="flex-1 h-12 text-lg font-semibold bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
+            <Play className="w-5 h-5 mr-2 fill-current" />
             Resume
           </Button>
         )}
-        <Button onClick={onReset} variant="outline" size="icon" disabled={status === 'idle'}>
-          <RotateCcw className="w-4 h-4" />
-        </Button>
-      </div>
 
-      {/* Mobile Direction Controls */}
-      <div className="grid grid-cols-3 gap-2 w-36 mx-auto md:hidden">
-        <div />
-        <Button 
-          variant="outline" 
+        <Button
+          onClick={onReset}
+          variant="outline"
           size="icon"
-          onClick={() => onDirectionChange('UP')}
-          disabled={status !== 'playing'}
+          className="h-12 w-12 border-white/10 bg-white/5 hover:bg-destructive hover:border-destructive hover:text-white transition-colors"
+          disabled={status === 'idle'}
+          title="Reset Game"
         >
-          <ArrowUp className="w-5 h-5" />
-        </Button>
-        <div />
-        <Button 
-          variant="outline" 
-          size="icon"
-          onClick={() => onDirectionChange('LEFT')}
-          disabled={status !== 'playing'}
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </Button>
-        <Button 
-          variant="outline" 
-          size="icon"
-          onClick={() => onDirectionChange('DOWN')}
-          disabled={status !== 'playing'}
-        >
-          <ArrowDown className="w-5 h-5" />
-        </Button>
-        <Button 
-          variant="outline" 
-          size="icon"
-          onClick={() => onDirectionChange('RIGHT')}
-          disabled={status !== 'playing'}
-        >
-          <ArrowRight className="w-5 h-5" />
+          <RotateCcw className="w-5 h-5" />
         </Button>
       </div>
 
       {/* Instructions */}
-      <div className="text-xs text-muted-foreground text-center space-y-1">
-        <p>Use Arrow keys or WASD to move</p>
-        <p>Press Space to start/pause</p>
+      <div className="text-xs text-muted-foreground text-center space-y-1 pt-2 border-t border-white/5">
+        <p>Use <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">Arrow Keys</kbd> or <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">WASD</kbd> to move</p>
+        <p>Press <kbd className="bg-black/30 px-1 rounded text-foreground font-mono">Space</kbd> to pause</p>
       </div>
     </div>
   );

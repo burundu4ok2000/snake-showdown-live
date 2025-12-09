@@ -35,7 +35,7 @@ export function LivePlayersList({ onSelectPlayer, selectedPlayerId, className }:
   }, []);
 
   return (
-    <Card className={cn("w-full max-w-md", className)}>
+    <Card className={cn("w-full max-w-md glass-card border-0", className)}>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2">
           <Users className="w-5 h-5 text-primary" />
@@ -64,8 +64,8 @@ export function LivePlayersList({ onSelectPlayer, selectedPlayerId, className }:
                 key={player.id}
                 className={cn(
                   "flex items-center gap-3 p-3 rounded-lg transition-all cursor-pointer",
-                  selectedPlayerId === player.id 
-                    ? "bg-primary/10 border border-primary" 
+                  selectedPlayerId === player.id
+                    ? "bg-primary/10 border border-primary"
                     : "bg-card hover:bg-accent/50 border border-transparent"
                 )}
                 onClick={() => onSelectPlayer(player)}

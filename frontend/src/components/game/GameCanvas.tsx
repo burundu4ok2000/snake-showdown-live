@@ -9,15 +9,17 @@ interface GameCanvasProps {
 }
 
 const CELL_SIZE = 20;
+
+// Premium Theme Colors
 const COLORS = {
-  background: '#1a1a2e',
-  grid: '#16213e',
-  snakeHead: '#7c3aed',
-  snakeBody: '#a78bfa',
-  snakeGlow: 'rgba(124, 58, 237, 0.5)',
-  food: '#f472b6',
-  foodGlow: 'rgba(244, 114, 182, 0.6)',
-  walls: '#4a5568',
+  background: '#09090b', // zinc-950
+  grid: '#18181b',       // zinc-900
+  snakeHead: '#8b5cf6',  // violet-500
+  snakeBody: '#a78bfa',  // violet-400
+  snakeGlow: 'rgba(139, 92, 246, 0.5)',
+  food: '#db2777',       // pink-600
+  foodGlow: 'rgba(219, 39, 119, 0.6)',
+  walls: '#27272a',      // zinc-800
 };
 
 export function GameCanvas({ gameState, className, showControls = false }: GameCanvasProps) {
@@ -32,6 +34,7 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
     if (!ctx) return;
 
     const size = gridSize * CELL_SIZE;
+    // Set internal resolution
     canvas.width = size;
     canvas.height = size;
 
@@ -122,12 +125,13 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
   }, [snake, food, gridSize, mode]);
 
   return (
-    <div className={cn("relative inline-block", className)}>
+    <div className={cn("relative flex justify-center items-center w-full", className)}>
       <canvas
         ref={canvasRef}
-        className="rounded-lg border-2 border-border shadow-xl"
+        className="rounded-xl border border-white/10 shadow-2xl w-full max-w-[500px] h-auto aspect-square"
         style={{ imageRendering: 'pixelated' }}
       />
     </div>
   );
 }
+

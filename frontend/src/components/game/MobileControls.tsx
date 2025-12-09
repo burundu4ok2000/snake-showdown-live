@@ -16,49 +16,32 @@ export function MobileControls({ onMove, className }: MobileControlsProps) {
         onMove(dir);
     };
 
-    return (
-        <div className={cn("grid grid-cols-3 gap-2 w-fit mx-auto select-none touch-none", className)}>
-            {/* Row 1 */}
-            <div />
-            <Button
-                variant="secondary"
-                size="icon"
-                className="h-14 w-14 rounded-full active:scale-95 transition-transform bg-primary/20 hover:bg-primary/30 border-2 border-primary/50"
-                onPointerDown={(e) => handlePress(e, 'UP')}
-                aria-label="Up"
-            >
-                <ChevronUp className="h-8 w-8 text-primary" />
-            </Button>
-            <div />
+    const ButtonBase = ({ dir, icon: Icon, label }: { dir: Direction, icon: any, label: string }) => (
+        <Button
+            variant="ghost"
+            size="icon"
+            className="h-16 w-16 rounded-2xl active:scale-90 transition-all duration-100 bg-primary/20 backdrop-blur-md border border-white/10 hover:bg-primary/30 text-primary shadow-lg"
+            onPointerDown={(e) => handlePress(e, dir)}
+            aria-label={label}
+        >
+            <Icon className="h-8 w-8" strokeWidth={3} />
+        </Button>
+    );
 
-            {/* Row 2 */}
-            <Button
-                variant="secondary"
-                size="icon"
-                className="h-14 w-14 rounded-full active:scale-95 transition-transform bg-primary/20 hover:bg-primary/30 border-2 border-primary/50"
-                onPointerDown={(e) => handlePress(e, 'LEFT')}
-                aria-label="Left"
-            >
-                <ChevronLeft className="h-8 w-8 text-primary" />
-            </Button>
-            <Button
-                variant="secondary"
-                size="icon"
-                className="h-14 w-14 rounded-full active:scale-95 transition-transform bg-primary/20 hover:bg-primary/30 border-2 border-primary/50"
-                onPointerDown={(e) => handlePress(e, 'DOWN')}
-                aria-label="Down"
-            >
-                <ChevronDown className="h-8 w-8 text-primary" />
-            </Button>
-            <Button
-                variant="secondary"
-                size="icon"
-                className="h-14 w-14 rounded-full active:scale-95 transition-transform bg-primary/20 hover:bg-primary/30 border-2 border-primary/50"
-                onPointerDown={(e) => handlePress(e, 'RIGHT')}
-                aria-label="Right"
-            >
-                <ChevronRight className="h-8 w-8 text-primary" />
-            </Button>
+    return (
+        <div className={cn("flex flex-col items-center gap-2 select-none touch-none pb-4", className)}>
+            {/* Up Button */}
+            <div className="flex justify-center">
+                <ButtonBase dir="UP" icon={ChevronUp} label="Up" />
+            </div>
+
+            {/* Left, Down, Right Buttons */}
+            <div className="flex gap-2 justify-center">
+                <ButtonBase dir="LEFT" icon={ChevronLeft} label="Left" />
+                <ButtonBase dir="DOWN" icon={ChevronDown} label="Down" />
+                <ButtonBase dir="RIGHT" icon={ChevronRight} label="Right" />
+            </div>
         </div>
     );
 }
+

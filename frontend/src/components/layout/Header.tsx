@@ -23,11 +23,11 @@ export function Header() {
   };
 
   return (
-    <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+    <header className="glass sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-xl font-bold text-primary hover:opacity-80 transition-opacity">
           <Gamepad2 className="w-6 h-6" />
-          Snake Arena
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-purple-400">Snake Arena</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-1">
@@ -55,33 +55,33 @@ export function Header() {
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-2">
+                <Button variant="outline" className="gap-2 border-white/10 bg-white/5 hover:bg-white/10">
                   <div className="w-6 h-6 bg-primary/20 rounded-full flex items-center justify-center">
                     <User className="w-3 h-3 text-primary" />
                   </div>
                   {user?.username}
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem className="gap-2">
+              <DropdownMenuContent align="end" className="glass border-white/10">
+                <DropdownMenuItem className="gap-2 cursor-pointer focus:bg-primary/20">
                   <User className="w-4 h-4" />
                   Profile
                 </DropdownMenuItem>
-                <DropdownMenuItem className="gap-2" asChild>
+                <DropdownMenuItem className="gap-2 cursor-pointer focus:bg-primary/20" asChild>
                   <Link to="/leaderboard">
                     <Trophy className="w-4 h-4" />
                     My Scores
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem className="gap-2 text-destructive" onClick={handleLogout}>
+                <DropdownMenuSeparator className="bg-white/10" />
+                <DropdownMenuItem className="gap-2 text-destructive cursor-pointer focus:bg-destructive/10" onClick={handleLogout}>
                   <LogOut className="w-4 h-4" />
                   Logout
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button asChild>
+            <Button asChild className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20">
               <Link to="/auth" className="gap-2">
                 <LogIn className="w-4 h-4" />
                 Sign In

@@ -42,7 +42,7 @@ export function Leaderboard({ className }: LeaderboardProps) {
   }, [filter]);
 
   return (
-    <Card className={cn("w-full max-w-md", className)}>
+    <Card className={cn("w-full max-w-md glass-card border-0", className)}>
       <CardHeader className="pb-3">
         <CardTitle className="flex items-center gap-2">
           <Trophy className="w-5 h-5 text-primary" />
@@ -56,7 +56,7 @@ export function Leaderboard({ className }: LeaderboardProps) {
             <TabsTrigger value="pass-through">Pass-Through</TabsTrigger>
             <TabsTrigger value="walls">Walls</TabsTrigger>
           </TabsList>
-          
+
           <TabsContent value={filter} className="mt-0">
             {loading ? (
               <div className="space-y-2">

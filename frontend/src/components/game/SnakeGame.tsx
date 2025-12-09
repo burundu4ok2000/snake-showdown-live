@@ -47,8 +47,7 @@ export function SnakeGame() {
         onResume={resumeGame}
         onReset={resetGame}
         onModeChange={setMode}
-        onDirectionChange={handleDirectionChange}
-        className="w-full max-w-xs"
+        className="w-full lg:max-w-xs"
       />
     </div>
   );
