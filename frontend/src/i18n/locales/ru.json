@@ -1,0 +1,57 @@
+{
+    "nav": {
+        "home": "Главная",
+        "leaderboard": "Таблица лидеров",
+        "howToPlay": "Как играть",
+        "spectate": "Зрители",
+        "login": "Войти",
+        "logout": "Выйти",
+        "profile": "Профиль"
+    },
+    "game": {
+        "title": "Арена змеек",
+        "subtitle": "Эпичная многопользовательская змейка",
+        "playNow": "Играть",
+        "start": "Старт",
+        "pause": "Пауза",
+        "resume": "Продолжить",
+        "restart": "Заново",
+        "score": "Счёт",
+        "highScore": "Рекорд",
+        "gameOver": "Игра окончена",
+        "newHighScore": "Новый рекорд!",
+        "tapToStart": "Нажми чтобы начать"
+    },
+    "modes": {
+        "title": "Режим игры",
+        "passThrough": "Сквозь стены",
+        "walls": "Со стенами",
+        "passThroughDesc": "Проходи сквозь границы",
+        "wallsDesc": "Столкновение со стеной = смерть"
+    },
+    "difficulty": {
+        "title": "Сложность",
+        "easy": "Легко",
+        "normal": "Нормально",
+        "hard": "Сложно",
+        "nightmare": "Кошмар",
+        "impossible": "Невозможно"
+    },
+    "powerups": {
+        "speedBoost": "Ускорение",
+        "slowMotion": "Замедление",
+        "shield": "Щит",
+        "doublePoints": "Двойные очки",
+        "invincibility": "Неуязвимость"
+    },
+    "controls": {
+        "title": "Управление",
+        "keyboard": "Используй WASD или стрелки",
+        "mobile": "Используй виртуальные кнопки",
+        "pause": "Нажми Пробел для паузы"
+    },
+    "footer": {
+        "madeWith": "Сделано с",
+        "by": "от"
+    }
+}

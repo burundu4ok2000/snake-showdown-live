@@ -1,0 +1,57 @@
+{
+    "nav": {
+        "home": "Startseite",
+        "leaderboard": "Bestenliste",
+        "howToPlay": "Spielanleitung",
+        "spectate": "Zuschauer",
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "profile": "Profil"
+    },
+    "game": {
+        "title": "Schlangen-Arena",
+        "subtitle": "Episches Multiplayer-Schlangen-Spiel",
+        "playNow": "Jetzt spielen",
+        "start": "Start",
+        "pause": "Pause",
+        "resume": "Fortsetzen",
+        "restart": "Neustart",
+        "score": "Punktzahl",
+        "highScore": "Höchstpunktzahl",
+        "gameOver": "Spiel vorbei",
+        "newHighScore": "Neuer Rekord!",
+        "tapToStart": "Tippen zum Starten"
+    },
+    "modes": {
+        "title": "Spielmodus",
+        "passThrough": "Durchgang",
+        "walls": "Mit Wänden",
+        "passThroughDesc": "Kanten kreuzen",
+        "wallsDesc": "Wände treffen = Spielende"
+    },
+    "difficulty": {
+        "title": "Schwierigkeit",
+        "easy": "Einfach",
+        "normal": "Normal",
+        "hard": "Schwer",
+        "nightmare": "Albtraum",
+        "impossible": "Unmöglich"
+    },
+    "powerups": {
+        "speedBoost": "Geschwindigkeitsschub",
+        "slowMotion": "Zeitlupe",
+        "shield": "Schild",
+        "doublePoints": "Doppelte Punkte",
+        "invincibility": "Unverwundbarkeit"
+    },
+    "controls": {
+        "title": "Steuerung",
+        "keyboard": "WASD oder Pfeiltasten verwenden",
+        "mobile": "Bildschirm D-Pad verwenden",
+        "pause": "Leertaste für Pause drücken"
+    },
+    "footer": {
+        "madeWith": "Gemacht mit",
+        "by": "von"
+    }
+}

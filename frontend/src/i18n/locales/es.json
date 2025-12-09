@@ -1,0 +1,57 @@
+{
+    "nav": {
+        "home": "Inicio",
+        "leaderboard": "Clasificación",
+        "howToPlay": "Cómo jugar",
+        "spectate": "Espectadores",
+        "login": "Iniciar sesión",
+        "logout": "Cerrar sesión",
+        "profile": "Perfil"
+    },
+    "game": {
+        "title": "Arena de Serpientes",
+        "subtitle": "Juego épico de serpientes multijugador",
+        "playNow": "Jugar ahora",
+        "start": "Empezar",
+        "pause": "Pausa",
+        "resume": "Reanudar",
+        "restart": "Reiniciar",
+        "score": "Puntuación",
+        "highScore": "Récord",
+        "gameOver": "Juego terminado",
+        "newHighScore": "¡Nuevo récord!",
+        "tapToStart": "Toca para empezar"
+    },
+    "modes": {
+        "title": "Modo de juego",
+        "passThrough": "Atravesar",
+        "walls": "Con paredes",
+        "passThroughDesc": "Cruza los bordes para aparecer al otro lado",
+        "wallsDesc": "Golpea las paredes y pierdes"
+    },
+    "difficulty": {
+        "title": "Dificultad",
+        "easy": "Fácil",
+        "normal": "Normal",
+        "hard": "Difícil",
+        "nightmare": "Pesadilla",
+        "impossible": "Imposible"
+    },
+    "powerups": {
+        "speedBoost": "Velocidad",
+        "slowMotion": "Cámara lenta",
+        "shield": "Escudo",
+        "doublePoints": "Puntos dobles",
+        "invincibility": "Invencibilidad"
+    },
+    "controls": {
+        "title": "Controles",
+        "keyboard": "Usa WASD o las flechas",
+        "mobile": "Usa el D-pad en pantalla",
+        "pause": "Presiona Espacio para pausar"
+    },
+    "footer": {
+        "madeWith": "Hecho con",
+        "by": "por"
+    }
+}
