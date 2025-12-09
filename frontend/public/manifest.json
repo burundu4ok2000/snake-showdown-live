@@ -1,0 +1,35 @@
+{
+    "name": "Snake Arena",
+    "short_name": "Snake",
+    "description": "Epic snake game with RPG elements, power-ups, and multiplayer",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#09090b",
+    "theme_color": "#8b5cf6",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "categories": [
+        "games",
+        "entertainment"
+    ],
+    "screenshots": [
+        {
+            "src": "/screenshot1.png",
+            "sizes": "750x1334",
+            "type": "image/png"
+        }
+    ]
+}
