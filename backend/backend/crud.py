@@ -94,6 +94,27 @@ def create_live_player(
     db.refresh(player)
     return player
 
+def update_live_player(
+    db: Session,
+    player_id: str,
+    score: int,
+    snake: list,
+    food: dict,
+    direction: str,
+    status: str
+) -> Optional[db_models.LivePlayer]:
+    player = get_live_player(db, player_id)
+    if player:
+        player.score = score
+        player.snake = snake
+        player.food = food
+        player.direction = direction
+        player.status = status
+        db.commit()
+        db.refresh(player)
+        return player
+    return None
+
 def delete_live_player(db: Session, player_id: str) -> bool:
     player = get_live_player(db, player_id)
     if player:

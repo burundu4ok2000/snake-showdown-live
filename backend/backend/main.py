@@ -175,3 +175,68 @@ def get_live_player(player_id: str, db: Session = Depends(get_db)):
         direction=player.direction,
         status=player.status
     )
+
+@app.post("/live-players", status_code=201, response_model=LivePlayer)
+def create_live_player(
+    player_data: LivePlayer,
+    db: Session = Depends(get_db)
+):
+    """Create a new live player when game starts"""
+    player = crud.create_live_player(
+        db,
+        player_id=player_data.id,
+        username=player_data.username,
+        score=player_data.score,
+        mode=player_data.mode,
+        snake=player_data.snake,
+        food=player_data.food,
+        direction=player_data.direction,
+        status=player_data.status
+    )
+    return LivePlayer(
+        id=player.id,
+        username=player.username,
+        score=player.score,
+        mode=GameMode(player.mode),
+        snake=player.snake,
+        food=player.food,
+        direction=player.direction,
+        status=player.status
+    )
+
+@app.put("/live-players/{player_id}", response_model=LivePlayer)
+def update_live_player(
+    player_id: str,
+    player_data: LivePlayer,
+    db: Session = Depends(get_db)
+):
+    """Update live player state during gameplay"""
+    player = crud.update_live_player(
+        db,
+        player_id=player_id,
+        score=player_data.score,
+        snake=player_data.snake,
+        food=player_data.food,
+        direction=player_data.direction,
+        status=player_data.status
+    )
+    if not player:
+        raise HTTPException(status_code=404, detail="Player not found")
+    return LivePlayer(
+        id=player.id,
+        username=player.username,
+        score=player.score,
+        mode=GameMode(player.mode),
+        snake=player.snake,
+        food=player.food,
+        direction=player.direction,
+        status=player.status
+    )
+
+@app.delete("/live-players/{player_id}", status_code=204)
+def delete_live_player(player_id: str, db: Session = Depends(get_db)):
+    """Remove player when game ends or player disconnects"""
+    success = crud.delete_live_player(db, player_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Player not found")
+    return None

@@ -146,12 +146,33 @@ export const livePlayersApi = {
     }
   },
 
-  // Simulation is now client-side, see lib/simulation.ts
-  // Kept here for compatibility if needed, but SpectatorView uses lib function now.
-  async simulatePlayerMove(playerId: string): Promise<LivePlayer | null> {
-    // No-op or throw, as proper simulation is moved
-    console.warn("livePlayersApi.simulatePlayerMove is deprecated. Use client-side simulation.");
-    return null;
+  async createPlayer(player: LivePlayer): Promise<LivePlayer> {
+    const response = await fetch(`${API_URL}/live-players`, {
+      method: 'POST',
+      headers: getHeaders(),
+      body: JSON.stringify(player),
+    });
+    return handleResponse(response);
+  },
+
+  async updatePlayer(playerId: string, player: LivePlayer): Promise<LivePlayer> {
+    const response = await fetch(`${API_URL}/live-players/${playerId}`, {
+      method: 'PUT',
+      headers: getHeaders(),
+      body: JSON.stringify(player),
+    });
+    return handleResponse(response);
+  },
+
+  async removePlayer(playerId: string): Promise<void> {
+    try {
+      await fetch(`${API_URL}/live-players/${playerId}`, {
+        method: 'DELETE',
+        headers: getHeaders(),
+      });
+    } catch (error) {
+      console.error('Failed to remove player:', error);
+    }
   },
 };
 
