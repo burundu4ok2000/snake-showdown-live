@@ -1,12 +1,13 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { GameMode, GameStatus } from '@/types/game';
+import { GameMode, GameStatus, GameDifficulty } from '@/types/game';
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface GameControlsProps {
   status: GameStatus;
   mode: GameMode;
+  difficulty: GameDifficulty;
   score: number;
   highScore: number;
   onStart: () => void;
@@ -14,12 +15,14 @@ interface GameControlsProps {
   onResume: () => void;
   onReset: () => void;
   onModeChange: (mode: GameMode) => void;
+  onDifficultyChange: (difficulty: GameDifficulty) => void;
   className?: string;
 }
 
 export function GameControls({
   status,
   mode,
+  difficulty,
   score,
   highScore,
   onStart,
@@ -27,6 +30,7 @@ export function GameControls({
   onResume,
   onReset,
   onModeChange,
+  onDifficultyChange,
   className,
 }: GameControlsProps) {
   return (

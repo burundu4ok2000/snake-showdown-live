@@ -14,6 +14,7 @@ export function SnakeGame() {
     resumeGame,
     resetGame,
     setMode,
+    setDifficulty,
     handleDirectionChange,
   } = useSnakeGame();
 
@@ -40,6 +41,7 @@ export function SnakeGame() {
       <GameControls
         status={gameState.status}
         mode={gameState.mode}
+        difficulty={gameState.difficulty}
         score={gameState.score}
         highScore={highScore}
         onStart={startGame}
@@ -47,6 +49,7 @@ export function SnakeGame() {
         onResume={resumeGame}
         onReset={resetGame}
         onModeChange={setMode}
+        onDifficultyChange={setDifficulty}
         className="w-full"
       />
     </div>

@@ -1,9 +1,9 @@
-import { Direction, GameMode, GameState, Position } from '@/types/game';
+import { Direction, GameMode, GameState, Position, GameDifficulty } from '@/types/game';
 
 export const GRID_SIZE = 25;
 export const INITIAL_SNAKE_LENGTH = 3;
 
-export function createInitialState(mode: GameMode): GameState {
+export function createInitialState(mode: GameMode, difficulty: GameDifficulty = 'normal'): GameState {
   const centerX = Math.floor(GRID_SIZE / 2);
   const centerY = Math.floor(GRID_SIZE / 2);
 
@@ -19,6 +19,7 @@ export function createInitialState(mode: GameMode): GameState {
     score: 0,
     status: 'idle',
     mode,
+    difficulty,
     gridSize: GRID_SIZE,
   };
 }

@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { GameMode, GameState, Direction } from '@/types/game';
+import { GameMode, GameState, Direction, GameDifficulty } from '@/types/game';
 import {
   createInitialState,
   moveSnake,
@@ -9,12 +9,12 @@ import {
 import { gameApi, livePlayersApi } from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
 import { soundManager } from '@/lib/soundManager';
+import { getDifficultyConfig } from '@/lib/difficultyConfig';
 
-const GAME_SPEED = 100; // ms per frame
 const UPDATE_INTERVAL = 1000; // Update live player every 1 second
 
-export function useSnakeGame(initialMode: GameMode = 'pass-through') {
-  const [gameState, setGameState] = useState<GameState>(() => createInitialState(initialMode));
+export function useSnakeGame(initialMode: GameMode = 'pass-through', initialDifficulty: GameDifficulty = 'normal') {
+  const [gameState, setGameState] = useState<GameState>(() => createInitialState(initialMode, initialDifficulty));
   const [highScore, setHighScore] = useState(0);
   const gameLoopRef = useRef<number | null>(null);
   const directionQueueRef = useRef<Direction[]>([]);
@@ -25,7 +25,7 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
   const startGame = useCallback(() => {
     soundManager.playStartSound();
     setGameState(prev => ({
-      ...createInitialState(prev.mode),
+      ...createInitialState(prev.mode, prev.difficulty),
       status: 'playing',
     }));
     directionQueueRef.current = [];
@@ -48,13 +48,20 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
   }, []);
 
   const resetGame = useCallback(() => {
-    setGameState(prev => createInitialState(prev.mode));
+    setGameState(prev => createInitialState(prev.mode, prev.difficulty));
     directionQueueRef.current = [];
   }, []);
 
   const setMode = useCallback((mode: GameMode) => {
     setGameState(prev => ({
-      ...createInitialState(mode),
+      ...createInitialState(mode, prev.difficulty),
+    }));
+    directionQueueRef.current = [];
+  }, []);
+
+  const setDifficulty = useCallback((difficulty: GameDifficulty) => {
+    setGameState(prev => ({
+      ...createInitialState(prev.mode, difficulty),
     }));
     directionQueueRef.current = [];
   }, []);
@@ -143,6 +150,7 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
       return;
     }
 
+    const GAME_SPEED = getDifficultyConfig(gameState.difficulty).speed;
     let lastTime = 0;
 
     const gameLoop = (currentTime: number) => {
@@ -176,7 +184,7 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
         cancelAnimationFrame(gameLoopRef.current);
       }
     };
-  }, [gameState.status]);
+  }, [gameState.status, gameState.difficulty]);
 
   // Keyboard controls
   useEffect(() => {
@@ -238,6 +246,7 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
     resumeGame,
     resetGame,
     setMode,
+    setDifficulty,
     handleDirectionChange,
   };
 }

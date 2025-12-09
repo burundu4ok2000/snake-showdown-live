@@ -2,6 +2,8 @@ export type Direction = 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
 
 export type GameMode = 'pass-through' | 'walls';
 
+export type GameDifficulty = 'easy' | 'normal' | 'hard' | 'nightmare' | 'impossible';
+
 export type GameStatus = 'idle' | 'playing' | 'paused' | 'game-over';
 
 export interface Position {
@@ -16,6 +18,7 @@ export interface GameState {
   score: number;
   status: GameStatus;
   mode: GameMode;
+  difficulty: GameDifficulty;
   gridSize: number;
 }
 
