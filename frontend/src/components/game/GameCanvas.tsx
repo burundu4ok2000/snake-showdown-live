@@ -1,6 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { GameState, Position } from '@/types/game';
 import { cn } from '@/lib/utils';
+import { ParticleSystem } from '@/lib/particleSystem';
 
 interface GameCanvasProps {
   gameState: GameState;
@@ -24,7 +25,13 @@ const COLORS = {
 
 export function GameCanvas({ gameState, className, showControls = false }: GameCanvasProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { snake, food, gridSize, mode } = gameState;
+  const { snake, food, gridSize, mode, status, score } = gameState;
+
+  // Particle system
+  const particleSystem = useMemo(() => new ParticleSystem(), []);
+  const previousFoodRef = useRef<Position>(food);
+  const previousStatusRef = useRef(status);
+  const previousScoreRef = useRef(score);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -122,7 +129,67 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
       }
     });
 
-  }, [snake, food, gridSize, mode]);
+    // Render particles on top
+    particleSystem.render(ctx);
+
+  }, [snake, food, gridSize, mode, particleSystem]);
+
+  // Detect food eaten and spawn particles
+  useEffect(() => {
+    if (score > previousScoreRef.current && status === 'playing') {
+      // Food was eaten - spawn particles at previous food position
+      particleSystem.spawnFoodParticles(previousFoodRef.current.x, previousFoodRef.current.y, CELL_SIZE);
+    }
+    previousScoreRef.current = score;
+    previousFoodRef.current = food;
+  }, [score, food, status, particleSystem]);
+
+  // Detect game over and spawn explosion
+  useEffect(() => {
+    if (status === 'game-over' && previousStatusRef.current === 'playing') {
+      // Game just ended - spawn explosion at snake head
+      if (snake.length > 0) {
+        particleSystem.spawnExplosion(snake[0].x, snake[0].y, CELL_SIZE);
+      }
+    }
+    previousStatusRef.current = status;
+  }, [status, snake, particleSystem, previousStatusRef]);
+
+  // Animation loop for particles
+  useEffect(() => {
+    if (status !== 'playing' && particleSystem.getCount() === 0) return;
+
+    let animationId: number;
+    let lastTime = performance.now();
+
+    const animate = (currentTime: number) => {
+      const deltaTime = (currentTime - lastTime) / 1000; // Convert to seconds
+      lastTime = currentTime;
+
+      particleSystem.update(deltaTime);
+
+      // Force re-render if particles exist
+      if (particleSystem.getCount() > 0) {
+        // Trigger re-render by updating a dummy state
+        canvasRef.current?.getContext('2d'); // This will trigger the main render effect
+      }
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(animationId);
+    };
+  }, [status, particleSystem]);
+
+  // Clear particles on game reset
+  useEffect(() => {
+    if (status === 'idle') {
+      particleSystem.clear();
+    }
+  }, [status, particleSystem]);
 
   return (
     <div className={cn("relative flex justify-center items-center w-full", className)}>
