@@ -55,5 +55,22 @@
   "footer": {
     "madeWith": "Made with",
     "by": "by"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "rank": "Rank",
+    "player": "Player",
+    "score": "Score",
+    "mode": "Mode",
+    "date": "Date",
+    "noScores": "No scores yet. Be the first!"
+  },
+  "spectate": {
+    "title": "Live Players",
+    "watching": "Watching",
+    "noPlayers": "No one playing right now",
+    "score": "Score",
+    "mode": "Mode",
+    "difficulty": "Difficulty"
   }
 }
