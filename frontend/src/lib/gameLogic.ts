@@ -21,6 +21,8 @@ export function createInitialState(mode: GameMode, difficulty: GameDifficulty = 
     mode,
     difficulty,
     gridSize: GRID_SIZE,
+    powerUps: [],
+    activeEffects: [],
   };
 }
 

@@ -6,9 +6,23 @@ export type GameDifficulty = 'easy' | 'normal' | 'hard' | 'nightmare' | 'impossi
 
 export type GameStatus = 'idle' | 'playing' | 'paused' | 'game-over';
 
+export type PowerUpType = 'speed-boost' | 'slow-motion' | 'shield' | 'double-points' | 'star';
+
 export interface Position {
   x: number;
   y: number;
+}
+
+export interface PowerUp {
+  id: string;
+  type: PowerUpType;
+  position: Position;
+  expiresAt: number; // timestamp when power-up disappears
+}
+
+export interface ActiveEffect {
+  type: PowerUpType;
+  expiresAt: number; // timestamp when effect ends
 }
 
 export interface GameState {
@@ -20,6 +34,8 @@ export interface GameState {
   mode: GameMode;
   difficulty: GameDifficulty;
   gridSize: number;
+  powerUps: PowerUp[];
+  activeEffects: ActiveEffect[];
 }
 
 export interface LeaderboardEntry {
