@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { GameMode, GameStatus, GameDifficulty } from '@/types/game';
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { getDifficultyConfig, DIFFICULTY_CONFIG } from '@/lib/difficultyConfig';
 
 interface GameControlsProps {
   status: GameStatus;
@@ -74,6 +75,35 @@ export function GameControls({
           >
             Walls
           </Button>
+        </div>
+      </div>
+
+      {/* Difficulty Selector - Full width on mobile, 2 cols on medium+ */}
+      <div className="space-y-1 md:col-span-4 lg:col-span-2">
+        <p className="text-[10px] text-muted-foreground uppercase tracking-widest pl-1 mb-1">Difficulty</p>
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-1 bg-black/20 p-1 rounded-lg border border-white/5">
+          {(Object.keys(DIFFICULTY_CONFIG) as GameDifficulty[]).map((diff) => {
+            const config = getDifficultyConfig(diff);
+            return (
+              <Button
+                key={diff}
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "h-12 md:h-10 rounded-md transition-all flex flex-col items-center justify-center gap-0.5 p-1",
+                  difficulty === diff
+                    ? `bg-primary text-primary-foreground shadow-md`
+                    : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                )}
+                onClick={() => onDifficultyChange(diff)}
+                disabled={status === 'playing'}
+                title={`${config.label} (×${config.scoreMultiplier} score)`}
+              >
+                <span className="text-base md:text-sm">{config.emoji}</span>
+                <span className="text-[9px] md:text-[10px] font-medium">{config.label}</span>
+              </Button>
+            );
+          })}
         </div>
       </div>
 
