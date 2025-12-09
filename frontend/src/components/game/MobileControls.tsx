@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronLeft, ChevronRight, LucideIcon } from 'lucide-react';
 import { Direction } from '@/types/game';
 import { cn } from '@/lib/utils';
 
@@ -16,7 +16,7 @@ export function MobileControls({ onMove, className }: MobileControlsProps) {
         onMove(dir);
     };
 
-    const ButtonBase = ({ dir, icon: Icon, label }: { dir: Direction, icon: any, label: string }) => (
+    const ButtonBase = ({ dir, icon: Icon, label }: { dir: Direction, icon: LucideIcon, label: string }) => (
         <Button
             variant="ghost"
             size="icon"
