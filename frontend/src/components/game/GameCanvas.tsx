@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useMemo } from 'react';
 import { GameState, Position } from '@/types/game';
 import { cn } from '@/lib/utils';
 import { ParticleSystem } from '@/lib/particleSystem';
+import { getPowerUpConfig } from '@/lib/powerUpConfig';
 
 interface GameCanvasProps {
   gameState: GameState;
@@ -85,6 +86,25 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
     );
     ctx.fill();
     ctx.shadowBlur = 0;
+
+    // Draw power-ups
+    gameState.powerUps.forEach((powerUp) => {
+      const config = getPowerUpConfig(powerUp.type);
+      const x = powerUp.position.x * CELL_SIZE + CELL_SIZE / 2;
+      const y = powerUp.position.y * CELL_SIZE + CELL_SIZE / 2;
+
+      // Pulsing glow effect
+      const pulse = Math.sin(Date.now() / 200) * 0.3 + 0.7;
+      ctx.shadowColor = config.color;
+      ctx.shadowBlur = 20 * pulse;
+
+      // Draw emoji (as text on canvas)
+      ctx.font = `${CELL_SIZE}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(config.emoji, x, y);
+      ctx.shadowBlur = 0;
+    });
 
     // Draw snake
     snake.forEach((segment, index) => {

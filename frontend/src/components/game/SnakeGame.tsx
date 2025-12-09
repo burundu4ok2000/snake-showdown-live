@@ -5,6 +5,7 @@ import { GameControls } from './GameControls';
 import { GameOverlay } from './GameOverlay';
 import { MobileControls } from './MobileControls';
 import { getDifficultyConfig } from '@/lib/difficultyConfig';
+import { getPowerUpConfig } from '@/lib/powerUpConfig';
 
 export function SnakeGame() {
   const {
@@ -45,6 +46,35 @@ export function SnakeGame() {
                   ×{difficultyConfig.scoreMultiplier}
                 </span>
               </div>
+            </div>
+          )}
+
+          {/* Active Effects */}
+          {gameState.status === 'playing' && gameState.activeEffects.length > 0 && (
+            <div className="absolute bottom-2 left-2 flex flex-col gap-1">
+              {gameState.activeEffects.map((effect, index) => {
+                const config = getPowerUpConfig(effect.type);
+                const timeLeft = effect.expiresAt > 0
+                  ? Math.max(0, Math.ceil((effect.expiresAt - Date.now()) / 1000))
+                  : '∞';
+
+                return (
+                  <div
+                    key={`${effect.type}_${index}`}
+                    className="bg-black/60 backdrop-blur-md border border-white/10 rounded-lg px-2 py-1 flex items-center gap-2 text-sm"
+                  >
+                    <span className="text-base">{config.emoji}</span>
+                    <span className={`font-semibold ${config.color}`}>
+                      {config.label}
+                    </span>
+                    {timeLeft !== '∞' && (
+                      <span className="text-xs text-muted-foreground">
+                        {timeLeft}s
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
