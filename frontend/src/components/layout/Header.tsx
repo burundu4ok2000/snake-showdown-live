@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
+import { SoundToggle } from '@/components/ui/SoundToggle';
 
 export function Header() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -52,6 +53,7 @@ export function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <SoundToggle />
           {isAuthenticated ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

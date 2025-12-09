@@ -8,6 +8,7 @@ import {
 } from '@/lib/gameLogic';
 import { gameApi, livePlayersApi } from '@/services/api';
 import { useAuth } from '@/contexts/AuthContext';
+import { soundManager } from '@/lib/soundManager';
 
 const GAME_SPEED = 100; // ms per frame
 const UPDATE_INTERVAL = 1000; // Update live player every 1 second
@@ -22,6 +23,7 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
   const { user } = useAuth();
 
   const startGame = useCallback(() => {
+    soundManager.playStartSound();
     setGameState(prev => ({
       ...createInitialState(prev.mode),
       status: 'playing',
@@ -30,6 +32,7 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
   }, []);
 
   const pauseGame = useCallback(() => {
+    soundManager.playPauseSound();
     setGameState(prev => ({
       ...prev,
       status: prev.status === 'playing' ? 'paused' : prev.status,
@@ -37,6 +40,7 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
   }, []);
 
   const resumeGame = useCallback(() => {
+    soundManager.playStartSound();
     setGameState(prev => ({
       ...prev,
       status: prev.status === 'paused' ? 'playing' : prev.status,
@@ -199,10 +203,26 @@ export function useSnakeGame(initialMode: GameMode = 'pass-through') {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [gameState.status, handleDirectionChange, startGame, pauseGame, resumeGame]);
 
+  // Play eat sound when score increases
+  const previousScoreRef = useRef(0);
+  useEffect(() => {
+    if (gameState.score > previousScoreRef.current && gameState.status === 'playing') {
+      soundManager.playEatSound();
+    }
+    previousScoreRef.current = gameState.score;
+  }, [gameState.score, gameState.status]);
+
   // Update high score and save game on game over
   useEffect(() => {
     if (gameState.status === 'game-over') {
-      if (gameState.score > highScore) {
+      soundManager.playGameOverSound();
+
+      const isNewHighScore = gameState.score > highScore;
+      if (isNewHighScore) {
+        // Play high score sound after game over sound
+        setTimeout(() => {
+          soundManager.playHighScoreSound();
+        }, 800);
         setHighScore(gameState.score);
       }
       // Save score
