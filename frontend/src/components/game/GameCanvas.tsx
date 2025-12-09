@@ -128,8 +128,9 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
     <div className={cn("relative flex justify-center items-center w-full", className)}>
       <canvas
         ref={canvasRef}
-        className="rounded-xl border border-white/10 shadow-2xl w-full max-w-[500px] h-auto aspect-square"
+        className="rounded-xl border border-white/10 shadow-2xl w-full max-w-[750px] h-auto aspect-square focus:outline-none focus:ring-2 focus:ring-primary/50"
         style={{ imageRendering: 'pixelated' }}
+        tabIndex={0}
       />
     </div>
   );
