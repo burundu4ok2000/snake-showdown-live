@@ -191,11 +191,23 @@ export function GameCanvas({ gameState, className, showControls = false }: GameC
     }
   }, [status, particleSystem]);
 
+  // Shake effect on game over
+  const [isShaking, setIsShaking] = React.useState(false);
+  useEffect(() => {
+    if (status === 'game-over' && previousStatusRef.current === 'playing') {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 500);
+    }
+  }, [status]);
+
   return (
     <div className={cn("relative flex justify-center items-center w-full", className)}>
       <canvas
         ref={canvasRef}
-        className="rounded-xl border border-white/10 shadow-2xl w-full max-w-[750px] h-auto aspect-square focus:outline-none focus:ring-2 focus:ring-primary/50"
+        className={cn(
+          "rounded-xl border border-white/10 shadow-2xl w-full max-w-[750px] h-auto aspect-square focus:outline-none focus:ring-2 focus:ring-primary/50",
+          isShaking && "animate-shake"
+        )}
         style={{ imageRendering: 'pixelated' }}
         tabIndex={0}
       />
