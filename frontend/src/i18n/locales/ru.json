@@ -22,7 +22,8 @@
     "highScore": "Рекорд",
     "gameOver": "Игра окончена",
     "newHighScore": "Новый рекорд!",
-    "tapToStart": "Нажми чтобы начать"
+    "tapToStart": "Нажми чтобы начать",
+    "pressSpace": "Нажми Пробел чтобы начать"
   },
   "modes": {
     "title": "Режим игры",
@@ -52,25 +53,42 @@
     "mobile": "Используй виртуальные кнопки",
     "pause": "Нажми Пробел для паузы"
   },
-  "footer": {
-    "madeWith": "Сделано с",
-    "by": "от"
-  },
   "leaderboard": {
     "title": "Таблица лидеров",
     "rank": "Место",
     "player": "Игрок",
     "score": "Очки",
     "mode": "Режим",
+    "difficulty": "Сложность",
     "date": "Дата",
-    "noScores": "Пока нет результатов. Будь первым!"
+    "noScores": "Пока нет результатов. Будь первым!",
+    "filterByMode": "Фильтр по режиму",
+    "allModes": "Все режимы"
   },
   "spectate": {
     "title": "Играющие сейчас",
-    "watching": "Смотрят",
+    "watching": "Зрители",
     "noPlayers": "Никто не играет",
     "score": "Счёт",
     "mode": "Режим",
-    "difficulty": "Сложность"
+    "difficulty": "Сложность",
+    "playingNow": "Играет сейчас"
+  },
+  "auth": {
+    "login": "Вход",
+    "signup": "Регистрация",
+    "username": "Имя пользователя",
+    "email": "Email",
+    "password": "Пароль",
+    "loginButton": "Войти",
+    "signupButton": "Зарегистрироваться",
+    "switchToSignup": "Нет аккаунта? Зарегистрируйся",
+    "switchToLogin": "Есть аккаунт? Войди",
+    "loggingIn": "Вход...",
+    "signingUp": "Регистрация..."
+  },
+  "footer": {
+    "madeWith": "Сделано с",
+    "by": "от"
   }
 }
