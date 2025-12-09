@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { Gamepad2, Trophy, Users, LogIn, LogOut, User } from 'lucide-react';
+import { Gamepad2, Trophy, Users, LogIn, LogOut, User, BookOpen } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +42,12 @@ export function Header() {
             <Link to="/leaderboard" className="gap-2">
               <Trophy className="w-4 h-4" />
               Leaderboard
+            </Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link to="/how-to-play" className="gap-2">
+              <BookOpen className="w-4 h-4" />
+              How to Play
             </Link>
           </Button>
           <Button variant="ghost" asChild>

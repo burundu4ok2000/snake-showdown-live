@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import { AuthPage } from "./pages/Auth";
 import LeaderboardPage from "./pages/LeaderboardPage";
 import SpectatePage from "./pages/SpectatePage";
+import { HowToPlayPage } from "./pages/HowToPlayPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/spectate" element={<SpectatePage />} />
+            <Route path="/how-to-play" element={<HowToPlayPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
