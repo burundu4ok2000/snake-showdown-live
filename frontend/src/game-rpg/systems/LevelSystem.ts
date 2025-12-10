@@ -77,12 +77,13 @@ export class LevelSystem {
         const foodConfig: Record<Food['type'], {
             points: number;
             xp: number;
+            health?: number;
             specialEffect?: Food['specialEffect'];
             effectDuration?: number;
         }> = {
-            apple: { points: 10, xp: 5 },
+            apple: { points: 10, xp: 5, health: 1 },
             gem: { points: 50, xp: 25 },
-            meat: { points: 15, xp: 10, specialEffect: 'speed', effectDuration: 3 },
+            meat: { points: 15, xp: 10, health: 2 },
             lightning: { points: 20, xp: 15, specialEffect: 'invincibility', effectDuration: 2 },
             shield: { points: 0, xp: 5, specialEffect: 'shield' },
             gold: { points: 5, xp: 0 },
@@ -97,6 +98,7 @@ export class LevelSystem {
             position: { ...position },
             points: config.points,
             xp: config.xp,
+            health: config.health,
             specialEffect: config.specialEffect,
             effectDuration: config.effectDuration,
         };
