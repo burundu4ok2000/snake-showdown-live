@@ -47,3 +47,20 @@ class LivePlayer(Base):
     direction = Column(String, nullable=False)
     status = Column(SQLEnum(GameStatusEnum), default=GameStatusEnum.PLAYING)
     last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class RPGLeaderboard(Base):
+    __tablename__ = "rpg_leaderboard"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    username = Column(String, nullable=False)
+    level_id = Column(Integer, nullable=False, index=True)  # 1-20
+    score = Column(Integer, nullable=False)  # Total score achieved
+    time_seconds = Column(Float, nullable=False)  # Time to complete
+    completed_at = Column(DateTime, default=datetime.utcnow, index=True)
+    
+    # Composite index for fast queries per level
+    __table_args__ = (
+        # Index for getting top scores per level
+        {'mysql_index': [('level_id', 'score', 'time_seconds')]},
+    )

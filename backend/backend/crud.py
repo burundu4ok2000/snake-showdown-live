@@ -122,3 +122,41 @@ def delete_live_player(db: Session, player_id: str) -> bool:
         db.commit()
         return True
     return False
+
+# RPG Leaderboard operations
+def create_rpg_leaderboard_entry(
+    db: Session,
+    user_id: int,
+    username: str,
+    level_id: int,
+    score: int,
+    time_seconds: float
+) -> db_models.RPGLeaderboard:
+    entry = db_models.RPGLeaderboard(
+        user_id=user_id,
+        username=username,
+        level_id=level_id,
+        score=score,
+        time_seconds=time_seconds
+    )
+    db.add(entry)
+    db.commit()
+    db.refresh(entry)
+    return entry
+
+def get_rpg_leaderboard(
+    db: Session,
+    level_id: int,
+    limit: int = 10
+) -> List[db_models.RPGLeaderboard]:
+    """Get top scores for a specific level, ordered by score DESC, then time ASC"""
+    return (
+        db.query(db_models.RPGLeaderboard)
+        .filter(db_models.RPGLeaderboard.level_id == level_id)
+        .order_by(
+            desc(db_models.RPGLeaderboard.score),
+            db_models.RPGLeaderboard.time_seconds.asc()
+        )
+        .limit(limit)
+        .all()
+    )

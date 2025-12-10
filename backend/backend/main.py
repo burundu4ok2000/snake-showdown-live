@@ -240,3 +240,55 @@ def delete_live_player(player_id: str, db: Session = Depends(get_db)):
     if not success:
         raise HTTPException(status_code=404, detail="Player not found")
     return None
+
+# RPG Leaderboard Endpoints
+@app.post("/rpg/leaderboard", status_code=201)
+def submit_rpg_score(
+    level_id: int,
+    score: int,
+    time_seconds: float,
+    current_user: db_models.User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """Submit RPG leaderboard score for a specific level"""
+    if level_id < 1 or level_id > 20:
+        raise HTTPException(status_code=400, detail="Level ID must be between 1 and 20")
+    
+    entry = crud.create_rpg_leaderboard_entry(
+        db,
+        user_id=current_user.id,
+        username=current_user.username,
+        level_id=level_id,
+        score=score,
+        time_seconds=time_seconds
+    )
+    return {
+        "id": entry.id,
+        "username": entry.username,
+        "level_id": entry.level_id,
+        "score": entry.score,
+        "time_seconds": entry.time_seconds,
+        "completed_at": entry.completed_at.isoformat()
+    }
+
+@app.get("/rpg/leaderboard/{level_id}")
+def get_rpg_leaderboard(
+    level_id: int,
+    limit: int = 10,
+    db: Session = Depends(get_db)
+):
+    """Get top scores for a specific RPG level"""
+    if level_id < 1 or level_id > 20:
+        raise HTTPException(status_code=400, detail="Level ID must be between 1 and 20")
+    
+    entries = crud.get_rpg_leaderboard(db, level_id, limit)
+    return [
+        {
+            "rank": idx + 1,
+            "username": entry.username,
+            "score": entry.score,
+            "time_seconds": entry.time_seconds,
+            "completed_at": entry.completed_at.isoformat()
+        }
+        for idx, entry in enumerate(entries)
+    ]
