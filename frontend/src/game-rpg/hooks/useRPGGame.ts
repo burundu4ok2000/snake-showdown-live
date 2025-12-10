@@ -247,6 +247,14 @@ export function useRPGGame() {
                         soundManager.playEatSound();
                     }
 
+                    // Heal player if food has health property
+                    if (foodItem.health && foodItem.health > 0) {
+                        newState.player.health = Math.min(
+                            newState.player.health + foodItem.health,
+                            newState.player.maxHealth
+                        );
+                    }
+
                     // Handle special effects
                     if (foodItem.specialEffect) {
                         const effect = {

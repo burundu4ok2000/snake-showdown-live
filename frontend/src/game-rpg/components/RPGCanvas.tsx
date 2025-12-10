@@ -230,7 +230,11 @@ function renderFood(ctx: CanvasRenderingContext2D, food: any) {
             break;
 
         case 'shield':
-            // Shield with cross
+            // Shield with cross and BLUE GLOW (power-up indicator!)
+            const shieldPulse = 0.5 + Math.sin(Date.now() / 150) * 0.5;
+            ctx.shadowColor = '#4477ff';
+            ctx.shadowBlur = 12;
+
             ctx.fillStyle = '#4477ff';
             ctx.beginPath();
             // Shield shape (rounded top, pointed bottom)
@@ -242,6 +246,7 @@ function renderFood(ctx: CanvasRenderingContext2D, food: any) {
             ctx.lineTo(px - TILE_SIZE * 0.3, py - TILE_SIZE * 0.2);
             ctx.closePath();
             ctx.fill();
+            ctx.shadowBlur = 0;
             // Cross on shield
             ctx.strokeStyle = '#ffffff';
             ctx.lineWidth = 3;
@@ -337,6 +342,16 @@ function renderEnemy(ctx: CanvasRenderingContext2D, enemy: any) {
     const py = enemy.position.y * TILE_SIZE + TILE_SIZE / 2; // Center Y
 
     ctx.save();
+
+    // Add red warning glow to ALL enemies (makes them clearly identifiable as threats!)
+    const pulse = 0.4 + Math.sin(Date.now() / 200) * 0.2;
+    ctx.shadowColor = '#ff0000';
+    ctx.shadowBlur = 15;
+    ctx.fillStyle = `rgba(255, 0, 0, ${pulse * 0.3})`;
+    ctx.beginPath();
+    ctx.arc(px, py, TILE_SIZE * 0.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
 
     // Draw different shapes based on enemy type
     switch (enemy.type) {

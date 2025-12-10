@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { useRPGGame } from '../game-rpg/hooks/useRPGGame';
 import { RPGCanvas } from '../game-rpg/components/RPGCanvas';
 import { RPGUI } from '../game-rpg/components/RPGUI';
-import { RPGControls } from '../game-rpg/components/RPGControls';
 import { BossHealthBar } from '../game-rpg/components/BossHealthBar';
+import { TutorialTooltip } from '../game-rpg/components/TutorialTooltip';
 
 export default function RPGPage() {
+    const [showTutorial, setShowTutorial] = useState(false);
+
     const {
         gameState,
         startGame,
@@ -15,6 +17,19 @@ export default function RPGPage() {
         resetGame,
         nextLevel,
     } = useRPGGame();
+
+    // Show tutorial on first visit
+    useEffect(() => {
+        const hasSeenTutorial = localStorage.getItem('rpg_tutorial_seen');
+        if (!hasSeenTutorial && gameState.status === 'menu') {
+            setShowTutorial(true);
+        }
+    }, [gameState.status]);
+
+    const handleCloseTutorial = () => {
+        setShowTutorial(false);
+        localStorage.setItem('rpg_tutorial_seen', 'true');
+    };
 
     const handleStart = () => {
         startGame(1); // Start Level 1
@@ -38,12 +53,15 @@ export default function RPGPage() {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-                    {/* Game Area */}
-                    <div className="xl:col-span-2 flex flex-col items-center">
-                        {/* UI Stats Above Game - Only when playing */}
+                {/* Centered Game Area */}
+                <div className="flex flex-col items-center">
+                    <div className="relative inline-block">
+                        {/* Canvas */}
+                        <RPGCanvas gameState={gameState} />
+
+                        {/* UI Stats Overlay - Top */}
                         {gameState.status === 'playing' && gameState.currentLevel && (
-                            <div className="w-full max-w-4xl mb-4">
+                            <div className="absolute top-0 left-0 right-0 pointer-events-none z-10">
                                 <RPGUI
                                     player={gameState.player}
                                     levelName={gameState.currentLevel.data.name}
@@ -53,157 +71,206 @@ export default function RPGPage() {
                             </div>
                         )}
 
-                        <div className="relative inline-block">
-                            {/* Canvas */}
-                            <RPGCanvas gameState={gameState} />
+                        {/* Boss Health Bar */}
+                        {bossEnemy && bossEnemy.state !== 'dead' && (
+                            <BossHealthBar boss={bossEnemy} />
+                        )}
 
-                            {/* Boss Health Bar */}
-                            {bossEnemy && bossEnemy.state !== 'dead' && (
-                                <BossHealthBar boss={bossEnemy} />
-                            )}
-
-                            {/* Menu Overlay */}
-                            {gameState.status === 'menu' && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm" style={{ minHeight: '580px' }}>
-                                    <div className="text-center px-4">
-                                        <div className="text-6xl mb-4">🐍⚔️</div>
-                                        <h2 className="text-3xl font-bold text-white mb-4">
+                        {/* Menu Overlay */}
+                        {gameState.status === 'menu' && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-black/95 via-black/90 to-black/95 backdrop-blur-md" style={{ minHeight: '580px' }}>
+                                <div className="text-center px-6 max-w-2xl">
+                                    {/* Animated Title */}
+                                    <div className="mb-6 animate-pulse">
+                                        <div className="text-7xl mb-3">🐍⚔️🐉</div>
+                                        <h2 className="text-5xl font-bold bg-gradient-to-r from-green-400 via-emerald-500 to-green-600 text-transparent bg-clip-text mb-2 drop-shadow-lg">
                                             Snake Quest
                                         </h2>
-                                        <p className="text-white/70 mb-6 max-w-md mx-auto">
-                                            The evil dragon Draco has stolen the Emerald Apple!
-                                            Help Naga the snake recover the 20 shards across 5 worlds!
+                                        <div className="text-yellow-400 text-xl font-semibold tracking-wide">
+                                            ⚔️ RPG MODE ⚔️
+                                        </div>
+                                    </div>
+
+                                    {/* Story Box */}
+                                    <div className="bg-gradient-to-br from-gray-900/80 to-gray-800/60 rounded-xl p-6 mb-6 border-2 border-yellow-500/30 backdrop-blur">
+                                        <p className="text-white/90 mb-3 text-lg leading-relaxed">
+                                            The evil dragon <span className="text-red-400 font-bold">Draco</span> has stolen the legendary{' '}
+                                            <span className="text-green-400 font-bold">Emerald Apple</span>!
                                         </p>
+                                        <p className="text-white/80 text-base">
+                                            Help <span className="text-cyan-400 font-bold">Naga</span> the brave snake recover{' '}
+                                            <span className="text-yellow-400 font-bold">20 magical shards</span> across{' '}
+                                            <span className="text-purple-400 font-bold">5 mystical worlds</span>!
+                                        </p>
+                                    </div>
+
+                                    {/* Features */}
+                                    <div className="grid grid-cols-2 gap-3 mb-6 text-sm">
+                                        <div className="bg-black/40 rounded-lg p-3 border border-cyan-500/30">
+                                            <div className="text-2xl mb-1">🗺️</div>
+                                            <div className="text-cyan-300 font-semibold">20 Levels</div>
+                                            <div className="text-white/60 text-xs">Epic Adventure</div>
+                                        </div>
+                                        <div className="bg-black/40 rounded-lg p-3 border border-red-500/30">
+                                            <div className="text-2xl mb-1">👾</div>
+                                            <div className="text-red-300 font-semibold">10+ Enemies</div>
+                                            <div className="text-white/60 text-xs">+ 4 Bosses</div>
+                                        </div>
+                                        <div className="bg-black/40 rounded-lg p-3 border border-yellow-500/30">
+                                            <div className="text-2xl mb-1">⚡</div>
+                                            <div className="text-yellow-300 font-semibold">Power-ups</div>
+                                            <div className="text-white/60 text-xs">Shields & More</div>
+                                        </div>
+                                        <div className="bg-black/40 rounded-lg p-3 border border-purple-500/30">
+                                            <div className="text-2xl mb-1">🎯</div>
+                                            <div className="text-purple-300 font-semibold">Progression</div>
+                                            <div className="text-white/60 text-xs">Level Up System</div>
+                                        </div>
+                                    </div>
+
+                                    {/* Start Button */}
+                                    <button
+                                        onClick={handleStart}
+                                        className="group relative px-10 py-5 bg-gradient-to-r from-green-600 via-emerald-600 to-green-700 hover:from-green-500 hover:via-emerald-500 hover:to-green-600 text-white font-bold rounded-xl text-2xl transition-all transform hover:scale-105 shadow-2xl shadow-green-500/50 border-2 border-green-400"
+                                    >
+                                        <span className="relative z-10 flex items-center gap-3">
+                                            ⚔️ Begin Quest ⚔️
+                                        </span>
+                                        <div className="absolute inset-0 bg-white/20 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                    </button>
+
+                                    <p className="text-white/40 text-xs mt-4">Press ❓ Help button for controls and tips</p>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Pause Overlay */}
+                        {gameState.status === 'paused' && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+                                <div className="text-center">
+                                    <h2 className="text-4xl font-bold text-white mb-4">Paused</h2>
+                                    <button
+                                        onClick={resumeGame}
+                                        className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg"
+                                    >
+                                        Resume
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Game Over Overlay */}
+                        {gameState.status === 'game-over' && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-sm">
+                                <div className="text-center px-4">
+                                    <div className="text-6xl mb-4">💀</div>
+                                    <h2 className="text-4xl font-bold text-red-500 mb-4">
+                                        Game Over
+                                    </h2>
+                                    <p className="text-white/80 mb-2">
+                                        Level: {gameState.currentLevel?.data.name || 'Unknown'}
+                                    </p>
+                                    <p className="text-white/80 mb-6">
+                                        Score: {gameState.player.score}
+                                    </p>
+                                    <div className="flex gap-4 justify-center">
                                         <button
-                                            onClick={handleStart}
-                                            className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-xl transition-colors"
+                                            onClick={() => startGame(gameState.currentLevel?.data.id || 1)}
+                                            className="px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg text-xl transition-colors"
                                         >
-                                            Begin Adventure
+                                            Try Again
                                         </button>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Pause Overlay */}
-                            {gameState.status === 'paused' && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-                                    <div className="text-center">
-                                        <h2 className="text-4xl font-bold text-white mb-4">Paused</h2>
-                                        <button
-                                            onClick={resumeGame}
-                                            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg"
-                                        >
-                                            Resume
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Level Complete Overlay */}
-                            {gameState.status === 'level-complete' && gameState.currentLevel && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-                                    <div className="text-center px-4">
-                                        <div className="text-6xl mb-4">🎉</div>
-                                        <h2 className="text-4xl font-bold text-yellow-400 mb-4">
-                                            Level Complete!
-                                        </h2>
-                                        <p className="text-white/90 text-xl mb-2">
-                                            {gameState.currentLevel.data.name}
-                                        </p>
-                                        <div className="text-white/70 mb-6">
-                                            <p>Stars: {gameState.currentLevel.starsCollected} ⭐</p>
-                                            <p>Enemies Defeated: {gameState.currentLevel.enemiesKilled}</p>
-                                            <p>Score: {gameState.player.score}</p>
-                                        </div>
-                                        <div className="flex gap-4 justify-center">
-                                            <button
-                                                onClick={nextLevel}
-                                                className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-xl transition-colors"
-                                            >
-                                                Next Level →
-                                            </button>
-                                            <button
-                                                onClick={resetGame}
-                                                className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg"
-                                            >
-                                                Main Menu
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Game Over Overlay */}
-                            {gameState.status === 'game-over' && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-                                    <div className="text-center px-4">
-                                        <div className="text-6xl mb-4">💀</div>
-                                        <h2 className="text-4xl font-bold text-red-500 mb-4">
-                                            Game Over
-                                        </h2>
-                                        <p className="text-white/70 mb-6">
-                                            Score: {gameState.player.score}
-                                        </p>
-                                        <div className="flex gap-4 justify-center">
-                                            <button
-                                                onClick={() => startGame(gameState.currentLevel?.data.id || 1)}
-                                                className="px-8 py-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-lg text-xl transition-colors"
-                                            >
-                                                Try Again
-                                            </button>
-                                            <button
-                                                onClick={resetGame}
-                                                className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg"
-                                            >
-                                                Main Menu
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Victory Overlay */}
-                            {gameState.status === 'victory' && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-yellow-900/90 to-purple-900/90 backdrop-blur-sm">
-                                    <div className="text-center px-4">
-                                        <div className="text-8xl mb-4">🏆👑</div>
-                                        <h2 className="text-5xl font-bold text-yellow-300 mb-4">
-                                            Victory!
-                                        </h2>
-                                        <p className="text-white text-xl mb-2">
-                                            You have completed Snake Quest!
-                                        </p>
-                                        <div className="text-white/90 mb-6 text-lg">
-                                            <p>Final Score: {gameState.player.score}</p>
-                                            <p>Total Stars: {gameState.player.stars} ⭐</p>
-                                            <p>Total Kills: {gameState.stats.totalKills}</p>
-                                            <p>Levels Completed: {gameState.stats.levelsCompleted.length}</p>
-                                        </div>
                                         <button
                                             onClick={resetGame}
-                                            className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xl transition-colors"
+                                            className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg"
                                         >
-                                            Play Again
+                                            Main Menu
                                         </button>
                                     </div>
                                 </div>
-                            )}
-                        </div>
-                    </div>
+                            </div>
+                        )}
 
-                    {/* Side Panel - Controls */}
-                    <div>
-                        <RPGControls
-                            status={gameState.status}
-                            score={gameState.player.score}
-                            levelName={gameState.status === 'playing' && gameState.currentLevel ? gameState.currentLevel.data.name : undefined}
-                            objectives={gameState.status === 'playing' && gameState.currentLevel ? gameState.currentLevel.data.objectives : undefined}
-                            onStart={handleStart}
-                            onPause={pauseGame}
-                            onResume={resumeGame}
-                            onReset={resetGame}
-                            className="sticky top-4"
-                        />
+                        {/* Level Complete Overlay */}
+                        {gameState.status === 'level-complete' && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/85 backdrop-blur-sm">
+                                <div className="text-center px-4">
+                                    <div className="text-6xl mb-4">✨</div>
+                                    <h2 className="text-4xl font-bold text-yellow-400 mb-4">
+                                        Level Complete!
+                                    </h2>
+                                    <p className="text-white/90 mb-2 text-lg">
+                                        {gameState.currentLevel?.data.name}
+                                    </p>
+                                    <div className="text-white/80 mb-6">
+                                        <p>Score: {gameState.player.score}</p>
+                                        <p>Stars: {gameState.player.stars} ⭐</p>
+                                        <p>Level: {gameState.player.level}</p>
+                                    </div>
+                                    <button
+                                        onClick={nextLevel}
+                                        className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-xl transition-colors"
+                                    >
+                                        Next Level →
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Victory Overlay */}
+                        {gameState.status === 'victory' && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/90 backdrop-blur">
+                                <div className="text-center px-4">
+                                    <div className="text-8xl mb-4">🎉</div>
+                                    <h2 className="text-5xl font-bold text-yellow-300 mb-4">
+                                        VICTORY!
+                                    </h2>
+                                    <p className="text-white/90 mb-6 text-xl">
+                                        You have completed Snake Quest!
+                                    </p>
+                                    <div className="text-white/90 mb-6 text-lg">
+                                        <p>Final Score: {gameState.player.score}</p>
+                                        <p>Total Stars: {gameState.player.stars} ⭐</p>
+                                        <p>Total Kills: {gameState.stats.totalKills}</p>
+                                        <p>Levels Completed: {gameState.stats.levelsCompleted.length}</p>
+                                    </div>
+                                    <button
+                                        onClick={resetGame}
+                                        className="px-8 py-4 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg text-xl transition-colors"
+                                    >
+                                        Play Again
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Tutorial Tooltip */}
+                        {showTutorial && <TutorialTooltip onClose={handleCloseTutorial} />}
+
+                        {/* Quick Controls Overlay (bottom-right) */}
+                        {gameState.status === 'playing' && (
+                            <div className="absolute bottom-4 right-4 flex flex-col gap-2 pointer-events-auto">
+                                <button
+                                    onClick={pauseGame}
+                                    className="px-4 py-2 bg-blue-600/90 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm">
+                                    ⏸️ Pause
+                                </button>
+                                <button
+                                    onClick={resetGame}
+                                    className="px-4 py-2 bg-gray-600/90 hover:bg-gray-700 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm">
+                                    🏠 Menu
+                                </button>
+                            </div>
+                        )}
+
+                        {/* Tutorial Button (bottom-left) */}
+                        <div className="absolute bottom-4 left-4 pointer-events-auto">
+                            <button
+                                onClick={() => setShowTutorial(true)}
+                                className="px-4 py-2 bg-yellow-600/90 hover:bg-yellow-700 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm">
+                                ❓ Help
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
