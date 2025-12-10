@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { Gamepad2, Trophy, Users, LogIn, LogOut, User, BookOpen } from 'lucide-react';
+import { Gamepad2, Trophy, Users, LogIn, LogOut, User, BookOpen, Sword } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import {
   DropdownMenu,
@@ -51,6 +51,12 @@ export function Header() {
             <Link to="/how-to-play" className="gap-2">
               <BookOpen className="w-4 h-4" />
               {t('nav.howToPlay')}
+            </Link>
+          </Button>
+          <Button variant="ghost" asChild>
+            <Link to="/rpg" className="gap-2">
+              <Sword className="w-4 h-4" />
+              RPG Mode
             </Link>
           </Button>
           <Button variant="ghost" asChild>

@@ -146,6 +146,77 @@ class SoundManager {
     }
 
     /**
+     * RPG SOUNDS
+     */
+
+    /**
+     * Sound: Hit enemy (impact sound)
+     */
+    playHitEnemySound() {
+        // Sharp impact
+        this.playTone(200, 0.08, 'square', 0.25);
+    }
+
+    /**
+     * Sound: Take damage (hurt sound)
+     */
+    playTakeDamageSound() {
+        // Descending hurt sound
+        this.playSequence([
+            { frequency: 300, duration: 0.08, type: 'sawtooth' },
+            { frequency: 150, duration: 0.12, type: 'sawtooth' },
+        ], 0.3);
+    }
+
+    /**
+     * Sound: Level up (fanfare)
+     */
+    playLevelUpSound() {
+        // Epic level up melody
+        this.playSequence([
+            { frequency: 523, duration: 0.12, type: 'square' }, // C
+            { frequency: 659, duration: 0.12, type: 'square' }, // E
+            { frequency: 784, duration: 0.12, type: 'square' }, // G
+            { frequency: 1047, duration: 0.25, type: 'square' }, // C (high)
+        ], 0.25);
+    }
+
+    /**
+     * Sound: Enemy death (explosion)
+     */
+    playEnemyDeathSound() {
+        // Explosion-like sound
+        this.playSequence([
+            { frequency: 100, duration: 0.05, type: 'sawtooth' },
+            { frequency: 80, duration: 0.1, type: 'sawtooth' },
+        ], 0.2);
+    }
+
+    /**
+     * Sound: Collect gem (sparkle)
+     */
+    playCollectGemSound() {
+        // Bright sparkle
+        this.playSequence([
+            { frequency: 880, duration: 0.06, type: 'sine' },
+            { frequency: 1100, duration: 0.06, type: 'sine' },
+            { frequency: 1320, duration: 0.08, type: 'sine' },
+        ], 0.2);
+    }
+
+    /**
+     * Sound: Collect star (special)
+     */
+    playCollectStarSound() {
+        // Magical chime
+        this.playSequence([
+            { frequency: 1320, duration: 0.1, type: 'sine' },
+            { frequency: 1568, duration: 0.1, type: 'sine' },
+            { frequency: 2093, duration: 0.15, type: 'sine' },
+        ], 0.25);
+    }
+
+    /**
      * Sound: Pause (single beep)
      */
     playPauseSound() {
