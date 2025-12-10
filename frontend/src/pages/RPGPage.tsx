@@ -94,7 +94,7 @@ export default function RPGPage() {
                         {/* Menu Overlay */}
                         {gameState.status === 'menu' && (
                             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-black/95 via-black/90 to-black/95 backdrop-blur-md" style={{ minHeight: '580px' }}>
-                                <div className="text-center px-6 max-w-2xl">
+                                <div className="text-center px-6 max-w-5xl w-full">
                                     {/* Animated Title */}
                                     <div className="mb-6 animate-pulse">
                                         <div className="text-7xl mb-3">🐍⚔️🐉</div>
