@@ -55,21 +55,21 @@ export default function RPGPage() {
 
                 {/* Centered Game Area */}
                 <div className="flex flex-col items-center">
+                    {/* UI Stats Above Game - Separate Element, NOT overlay */}
+                    {gameState.status === 'playing' && gameState.currentLevel && (
+                        <div className="w-full max-w-[900px] mb-4">
+                            <RPGUI
+                                player={gameState.player}
+                                levelName={gameState.currentLevel.data.name}
+                                currentLevelId={gameState.currentLevel.data.id}
+                                objectives={gameState.currentLevel.data.objectives}
+                            />
+                        </div>
+                    )}
+
                     <div className="relative inline-block">
                         {/* Canvas */}
                         <RPGCanvas gameState={gameState} />
-
-                        {/* UI Stats Overlay - Top */}
-                        {gameState.status === 'playing' && gameState.currentLevel && (
-                            <div className="absolute top-0 left-0 right-0 pointer-events-none z-10">
-                                <RPGUI
-                                    player={gameState.player}
-                                    levelName={gameState.currentLevel.data.name}
-                                    currentLevelId={gameState.currentLevel.data.id}
-                                    objectives={gameState.currentLevel.data.objectives}
-                                />
-                            </div>
-                        )}
 
                         {/* Boss Health Bar */}
                         {bossEnemy && bossEnemy.state !== 'dead' && (
