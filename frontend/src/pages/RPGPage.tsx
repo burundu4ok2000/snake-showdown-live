@@ -56,14 +56,17 @@ export default function RPGPage() {
     return (
         <Layout>
             <div className="container mx-auto px-4 py-8">
-                <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-foreground mb-2">
-                        Snake Quest RPG
-                    </h1>
-                    <p className="text-muted-foreground">
-                        Embark on an epic adventure through 20 levels of serpent-powered action!
-                    </p>
-                </div>
+                {/* Hide title when menu is shown to avoid overlap */}
+                {gameState.status !== 'menu' && (
+                    <div className="text-center mb-8">
+                        <h1 className="text-4xl font-bold text-foreground mb-2">
+                            Snake Quest RPG
+                        </h1>
+                        <p className="text-muted-foreground">
+                            Embark on an epic adventure through 20 levels of serpent-powered action!
+                        </p>
+                    </div>
+                )}
 
                 {/* Centered Game Area */}
                 <div ref={gameContainerRef} className="flex flex-col items-center">

@@ -8,7 +8,7 @@ interface RPGCanvasProps {
     gameState: RPGGameState;
 }
 
-const TILE_SIZE = 25; // pixels per tile (increased for better visibility)
+const TILE_SIZE = 32; // Increased from 25 to use more screen space!
 const CANVAS_PADDING = 40;
 
 export function RPGCanvas({ gameState }: RPGCanvasProps) {
