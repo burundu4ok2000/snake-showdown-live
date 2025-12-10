@@ -50,8 +50,13 @@ export function RPGCanvas({ gameState }: RPGCanvasProps) {
         // Render snake
         renderSnake(ctx, gameState.player.snake, gameState.player.invincible);
 
-        // Render exit
-        renderExit(ctx, map.exitPoint);
+        // Check if exit is ready (all objectives except reach_exit completed)
+        const exitReady = gameState.currentLevel.data.objectives
+            .filter(obj => obj.type !== 'reach_exit')
+            .every(obj => obj.completed);
+
+        // Render exit (with pulsing if ready!)
+        renderExit(ctx, map.exitPoint, exitReady);
 
         // Restore context
         ctx.restore();
@@ -771,26 +776,69 @@ function renderSnake(ctx: CanvasRenderingContext2D, snake: any[], invincible: bo
 }
 
 // Render exit
-function renderExit(ctx: CanvasRenderingContext2D, exit: any) {
+function renderExit(ctx: CanvasRenderingContext2D, exit: any, isReady: boolean = false) {
     // Center in grid cell
     const px = exit.x * TILE_SIZE + TILE_SIZE / 2;
     const py = exit.y * TILE_SIZE + TILE_SIZE / 2;
 
-    // Pulsing glow
-    const pulse = 0.5 + Math.sin(Date.now() / 300) * 0.5;
-    const gradient = ctx.createRadialGradient(
-        px, py, 0,
-        px, py, TILE_SIZE
-    );
-    gradient.addColorStop(0, `rgba(255, 215, 0, ${pulse})`);
-    gradient.addColorStop(1, 'transparent');
+    if (isReady) {
+        // READY TO ENTER - Strong pulsing effect!
+        const pulse = 0.6 + Math.sin(Date.now() / 200) * 0.4; // Faster, stronger pulse
 
-    ctx.fillStyle = gradient;
-    ctx.fillRect(px - TILE_SIZE, py - TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
+        // Outer glow - very bright when ready
+        const outerGradient = ctx.createRadialGradient(
+            px, py, 0,
+            px, py, TILE_SIZE * 1.5
+        );
+        outerGradient.addColorStop(0, `rgba(0, 255, 100, ${pulse * 0.8})`);
+        outerGradient.addColorStop(0.5, `rgba(0, 200, 255, ${pulse * 0.5})`);
+        outerGradient.addColorStop(1, 'transparent');
 
-    // Portal emoji
-    ctx.font = `${TILE_SIZE * 1.2}px Arial`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('🚪', px, py);
+        ctx.fillStyle = outerGradient;
+        ctx.fillRect(px - TILE_SIZE * 1.5, py - TILE_SIZE * 1.5, TILE_SIZE * 3, TILE_SIZE * 3);
+
+        // Inner bright glow
+        const innerGradient = ctx.createRadialGradient(
+            px, py, 0,
+            px, py, TILE_SIZE
+        );
+        innerGradient.addColorStop(0, `rgba(255, 255, 100, ${pulse})`);
+        innerGradient.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = innerGradient;
+        ctx.fillRect(px - TILE_SIZE, py - TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
+
+        // Portal emoji - bright and pulsing
+        ctx.save();
+        ctx.shadowColor = '#00ff66';
+        ctx.shadowBlur = 15;
+        ctx.font = `${TILE_SIZE * 1.4}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🚪', px, py);
+        ctx.restore();
+    } else {
+        // NOT READY - Dim, locked appearance
+        const dimPulse = 0.3 + Math.sin(Date.now() / 500) * 0.1; // Slow, dim pulse
+
+        // Dim glow
+        const gradient = ctx.createRadialGradient(
+            px, py, 0,
+            px, py, TILE_SIZE
+        );
+        gradient.addColorStop(0, `rgba(100, 100, 100, ${dimPulse})`);
+        gradient.addColorStop(1, 'transparent');
+
+        ctx.fillStyle = gradient;
+        ctx.fillRect(px - TILE_SIZE, py - TILE_SIZE, TILE_SIZE * 2, TILE_SIZE * 2);
+
+        // Portal emoji - dim
+        ctx.save();
+        ctx.globalAlpha = 0.5; // Faded
+        ctx.font = `${TILE_SIZE * 1.2}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('🚪', px, py);
+        ctx.restore();
+    }
 }
