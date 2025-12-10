@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Layout } from '@/components/layout/Layout';
 import { useRPGGame } from '../game-rpg/hooks/useRPGGame';
 import { RPGCanvas } from '../game-rpg/components/RPGCanvas';
@@ -8,6 +8,7 @@ import { TutorialTooltip } from '../game-rpg/components/TutorialTooltip';
 
 export default function RPGPage() {
     const [showTutorial, setShowTutorial] = useState(false);
+    const gameContainerRef = useRef<HTMLDivElement>(null);
 
     const {
         gameState,
@@ -23,6 +24,17 @@ export default function RPGPage() {
         const hasSeenTutorial = localStorage.getItem('rpg_tutorial_seen');
         if (!hasSeenTutorial && gameState.status === 'menu') {
             setShowTutorial(true);
+        }
+    }, [gameState.status]);
+
+    // Auto-scroll to game area when playing
+    useEffect(() => {
+        if (gameState.status === 'playing' && gameContainerRef.current) {
+            // Scroll with smooth animation
+            gameContainerRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
         }
     }, [gameState.status]);
 
@@ -54,7 +66,7 @@ export default function RPGPage() {
                 </div>
 
                 {/* Centered Game Area */}
-                <div className="flex flex-col items-center">
+                <div ref={gameContainerRef} className="flex flex-col items-center">
                     {/* UI Stats Above Game - Separate Element, NOT overlay */}
                     {gameState.status === 'playing' && gameState.currentLevel && (
                         <div className="w-full max-w-[900px] mb-4">
