@@ -81,11 +81,6 @@ export default function RPGPage() {
                         {/* Canvas */}
                         <RPGCanvas gameState={gameState} />
 
-                        {/* Boss Health Bar */}
-                        {bossEnemy && bossEnemy.state !== 'dead' && (
-                            <BossHealthBar boss={bossEnemy} />
-                        )}
-
                         {/* Menu Overlay */}
                         {gameState.status === 'menu' && (
                             <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-b from-black/95 via-black/90 to-black/95 backdrop-blur-md" style={{ minHeight: '580px' }}>
@@ -264,38 +259,52 @@ export default function RPGPage() {
 
                         {/* Tutorial Tooltip */}
                         {showTutorial && <TutorialTooltip onClose={handleCloseTutorial} />}
+                    </div>
 
-                        {/* Quick Controls Overlay (bottom-right) */}
-                        {gameState.status === 'playing' && (
-                            <div className="absolute bottom-4 right-4 flex flex-col gap-2 pointer-events-auto">
+                    {/* UI Stats & Controls - Right Side Panel */}
+                    {gameState.status === 'playing' && gameState.currentLevel && (
+                        <div className="w-64 flex-shrink-0 flex flex-col gap-4">
+                            {/* Player Stats */}
+                            <RPGUI
+                                player={gameState.player}
+                                levelName={gameState.currentLevel.data.name}
+                                currentLevelId={gameState.currentLevel.data.id}
+                                objectives={gameState.currentLevel.data.objectives}
+                            />
+
+                            {/* Boss Health Bar */}
+                            {bossEnemy && bossEnemy.state !== 'dead' && (
+                                <div className="bg-gray-900/50 rounded-lg p-3 border border-red-500/30">
+                                    <BossHealthBar boss={bossEnemy} />
+                                </div>
+                            )}
+
+                            {/* Control Buttons */}
+                            <div className="flex flex-col gap-2">
                                 <button
                                     onClick={pauseGame}
-                                    className="px-4 py-2 bg-blue-600/90 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm">
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg shadow-lg transition-all w-full">
                                     ⏸️ Pause
                                 </button>
                                 <button
                                     onClick={resetGame}
-                                    className="px-4 py-2 bg-gray-600/90 hover:bg-gray-700 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm">
+                                    className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white font-bold rounded-lg shadow-lg transition-all w-full">
                                     🏠 Menu
                                 </button>
+                                <button
+                                    onClick={() => setShowTutorial(true)}
+                                    className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white font-bold rounded-lg shadow-lg transition-all w-full">
+                                    ❓ Help
+                                </button>
                             </div>
-                        )}
-
-                        {/* Tutorial Button (bottom-left) */}
-                        <div className="absolute bottom-4 left-4 flex flex-col gap-2 pointer-events-auto">
-                            <button
-                                onClick={() => setShowTutorial(true)}
-                                className="px-4 py-2 bg-yellow-600/90 hover:bg-yellow-700 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm">
-                                ❓ Help
-                            </button>
 
                             {/* Developer Mode Controls */}
-                            {isDevMode && gameState.status === 'playing' && (
-                                <>
-                                    <div className="px-3 py-1 bg-purple-600/90 text-white text-xs font-bold rounded text-center">
+                            {isDevMode && (
+                                <div className="flex flex-col gap-2">
+                                    <div className="px-3 py-1 bg-purple-600 text-white text-xs font-bold rounded text-center">
                                         🛠️ DEV MODE
                                     </div>
-                                    <div className="px-3 py-1 bg-green-600/90 text-white text-xs font-bold rounded text-center">
+                                    <div className="px-3 py-1 bg-green-600 text-white text-xs font-bold rounded text-center">
                                         ⚡ GOD MODE
                                     </div>
                                     <div className="flex gap-2">
@@ -305,7 +314,7 @@ export default function RPGPage() {
                                                 if (currentId > 1) startGame(currentId - 1);
                                             }}
                                             disabled={(gameState.currentLevel?.data.id || 1) <= 1}
-                                            className="px-3 py-2 bg-blue-600/90 hover:bg-blue-700 disabled:bg-gray-500/50 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm text-xs">
+                                            className="flex-1 px-2 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500/50 text-white font-bold rounded-lg shadow-lg transition-all text-xs">
                                             ← Prev
                                         </button>
                                         <button
@@ -314,24 +323,12 @@ export default function RPGPage() {
                                                 if (currentId < 20) startGame(currentId + 1);
                                             }}
                                             disabled={(gameState.currentLevel?.data.id || 1) >= 20}
-                                            className="px-3 py-2 bg-blue-600/90 hover:bg-blue-700 disabled:bg-gray-500/50 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm text-xs">
+                                            className="flex-1 px-2 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-500/50 text-white font-bold rounded-lg shadow-lg transition-all text-xs">
                                             Next →
                                         </button>
                                     </div>
-                                </>
+                                </div>
                             )}
-                        </div>
-                    </div>
-
-                    {/* UI Stats - Right Side Panel */}
-                    {gameState.status === 'playing' && gameState.currentLevel && (
-                        <div className="w-64 flex-shrink-0">
-                            <RPGUI
-                                player={gameState.player}
-                                levelName={gameState.currentLevel.data.name}
-                                currentLevelId={gameState.currentLevel.data.id}
-                                objectives={gameState.currentLevel.data.objectives}
-                            />
                         </div>
                     )}
                 </div>
