@@ -357,28 +357,31 @@ export function useRPGGame() {
 
             // Check if player reached exit
             const exitPoint = newState.currentLevel.data.map.exitPoint;
+            // Check if player reached exit
+            const exitObjective = newState.currentLevel.data.objectives.find(
+                obj => obj.type === 'reach_exit'
+            );
+
             if (newHead.x === exitPoint.x && newHead.y === exitPoint.y) {
-                // Mark reach_exit objective as completed
-                const exitObjective = newState.currentLevel.data.objectives.find(
-                    obj => obj.type === 'reach_exit'
-                );
+                // Player is at the exit door!
                 if (exitObjective && !exitObjective.completed) {
                     exitObjective.completed = true;
                     exitObjective.current = 1;
                 }
-            }
 
-            // Check objectives
-            const allCompleted = LevelSystem.checkObjectives(
-                newState.currentLevel,
-                newState.enemies,
-                newState.food
-            );
+                // Check if ALL objectives are now complete (including reach_exit)
+                const allCompleted = LevelSystem.checkObjectives(
+                    newState.currentLevel,
+                    newState.enemies,
+                    newState.food
+                );
 
-            if (allCompleted && !newState.completedLevels.includes(`level_${newState.currentLevel.data.id}`)) {
-                newState.status = 'level-complete';
-                newState.completedLevels.push(`level_${newState.currentLevel.data.id}`);
-                newState.stats.levelsCompleted.push(`level_${newState.currentLevel.data.id}`);
+                // Complete level ONLY if player is at exit AND all objectives done
+                if (allCompleted && !newState.completedLevels.includes(`level_${newState.currentLevel.data.id}`)) {
+                    newState.status = 'level-complete';
+                    newState.completedLevels.push(`level_${newState.currentLevel.data.id}`);
+                    newState.stats.levelsCompleted.push(`level_${newState.currentLevel.data.id}`);
+                }
             }
 
             return newState;
