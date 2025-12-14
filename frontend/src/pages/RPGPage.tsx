@@ -69,20 +69,9 @@ export default function RPGPage() {
                     </div>
                 )}
 
-                {/* Centered Game Area */}
-                <div ref={gameContainerRef} className="flex flex-col items-center">
-                    {/* UI Stats Above Game - Separate Element, NOT overlay */}
-                    {gameState.status === 'playing' && gameState.currentLevel && (
-                        <div className="w-full max-w-[900px] mb-4">
-                            <RPGUI
-                                player={gameState.player}
-                                levelName={gameState.currentLevel.data.name}
-                                currentLevelId={gameState.currentLevel.data.id}
-                                objectives={gameState.currentLevel.data.objectives}
-                            />
-                        </div>
-                    )}
-
+                {/* Game Area with Side Panel */}
+                <div ref={gameContainerRef} className="flex flex-row items-start justify-center gap-6">
+                    {/* Canvas - Left Side */}
                     <div className="relative inline-block">
                         {/* Canvas */}
                         <RPGCanvas gameState={gameState} />
@@ -296,6 +285,18 @@ export default function RPGPage() {
                             </button>
                         </div>
                     </div>
+
+                    {/* UI Stats - Right Side Panel */}
+                    {gameState.status === 'playing' && gameState.currentLevel && (
+                        <div className="w-64 flex-shrink-0">
+                            <RPGUI
+                                player={gameState.player}
+                                levelName={gameState.currentLevel.data.name}
+                                currentLevelId={gameState.currentLevel.data.id}
+                                objectives={gameState.currentLevel.data.objectives}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </Layout>
