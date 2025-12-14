@@ -14,7 +14,7 @@ export default function RPGPage() {
     const gameContainerRef = useRef<HTMLDivElement>(null);
 
     // Developer mode - only for specific user
-    const isDevMode = user?.email === 'burundu4ok2000@gmail.com';
+    const isDevMode = user?.email === 'burundu4ok2000@outlook.com';
 
     const {
         gameState,
