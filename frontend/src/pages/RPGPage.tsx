@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '@/components/layout/Layout';
 import { useRPGGame } from '../game-rpg/hooks/useRPGGame';
 import { RPGCanvas } from '../game-rpg/components/RPGCanvas';
@@ -222,12 +223,20 @@ export default function RPGPage() {
                                         <p>Stars: {gameState.player.stars} ⭐</p>
                                         <p>Level: {gameState.player.level}</p>
                                     </div>
-                                    <button
-                                        onClick={nextLevel}
-                                        className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-xl transition-colors"
-                                    >
-                                        Next Level →
-                                    </button>
+                                    <div className="flex gap-4 justify-center">
+                                        <button
+                                            onClick={nextLevel}
+                                            className="px-8 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg text-xl transition-colors"
+                                        >
+                                            Next Level →
+                                        </button>
+                                        <Link
+                                            to="/rpg/leaderboard"
+                                            className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-lg flex items-center gap-2 transition-colors"
+                                        >
+                                            📊 Leaderboard
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         )}
