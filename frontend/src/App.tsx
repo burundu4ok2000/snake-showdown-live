@@ -10,6 +10,7 @@ import LeaderboardPage from "./pages/LeaderboardPage";
 import SpectatePage from "./pages/SpectatePage";
 
 import RPGPage from "./pages/RPGPage";
+import RPGLeaderboardPage from "./pages/RPGLeaderboardPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
             <Route path="/spectate" element={<SpectatePage />} />
 
             <Route path="/rpg" element={<RPGPage />} />
+            <Route path="/rpg/leaderboard" element={<RPGLeaderboardPage />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
