@@ -15,7 +15,7 @@ import { soundManager } from '@/lib/soundManager';
 const MOVE_INTERVAL = 150; // Milliseconds between moves (slower = easier)
 const SNAKE_GROW_SIZE = 1;
 
-export function useRPGGame() {
+export function useRPGGame(isDevMode: boolean = false) {
     const [gameState, setGameState] = useState<RPGGameState>(createInitialRPGGameState());
     const animationFrameRef = useRef<number>();
     const lastTimeRef = useRef<number>(Date.now());
@@ -191,27 +191,32 @@ export function useRPGGame() {
 
             // Check wall collision
             if (!CollisionUtils.isWalkable(newState.currentLevel.data.map, newHead)) {
-                // Hit wall, take damage
-                const died = CombatSystem.playerTakeDamage(newState.player, 1);
-                if (died) {
-                    newState.status = 'game-over';
-                    soundManager.playGameOverSound();
-                    return newState;
+                // Hit wall, take damage (skip if god mode)
+                if (!isDevMode) {
+                    const died = CombatSystem.playerTakeDamage(newState.player, 1);
+                    if (died) {
+                        newState.status = 'game-over';
+                        soundManager.playGameOverSound();
+                        return newState;
+                    }
+                    soundManager.playTakeDamageSound();
                 }
-                soundManager.playTakeDamageSound();
                 // Don't move
                 return newState;
             }
 
             // Check self collision
             if (CombatSystem.checkSelfCollision([newHead, ...newState.player.snake.slice(1)])) {
-                const died = CombatSystem.playerTakeDamage(newState.player, 1);
-                if (died) {
-                    newState.status = 'game-over';
-                    soundManager.playGameOverSound();
-                    return newState;
+                // Self collision, take damage (skip if god mode)
+                if (!isDevMode) {
+                    const died = CombatSystem.playerTakeDamage(newState.player, 1);
+                    if (died) {
+                        newState.status = 'game-over';
+                        soundManager.playGameOverSound();
+                        return newState;
+                    }
+                    soundManager.playTakeDamageSound();
                 }
-                soundManager.playTakeDamageSound();
                 return newState;
             }
 
@@ -305,9 +310,9 @@ export function useRPGGame() {
                     const enemyDied = CombatSystem.enemyTakeDamage(enemy, 1);
                     soundManager.playHitEnemySound();
 
-                    // Player takes damage from enemy ONLY if enemy survived the hit (unless invincible)
+                    // Player takes damage from enemy ONLY if enemy survived the hit (unless invincible or god mode)
                     // This makes one-shot kills safe and fair!
-                    if (!enemyDied && !newState.player.invincible) {
+                    if (!enemyDied && !newState.player.invincible && !isDevMode) {
                         const playerDied = CombatSystem.playerTakeDamage(newState.player, enemy.damage);
                         if (playerDied) {
                             newState.status = 'game-over';

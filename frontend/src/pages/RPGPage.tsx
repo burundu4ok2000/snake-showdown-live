@@ -6,10 +6,15 @@ import { RPGCanvas } from '../game-rpg/components/RPGCanvas';
 import { RPGUI } from '../game-rpg/components/RPGUI';
 import { BossHealthBar } from '../game-rpg/components/BossHealthBar';
 import { TutorialTooltip } from '../game-rpg/components/TutorialTooltip';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function RPGPage() {
+    const { user } = useAuth();
     const [showTutorial, setShowTutorial] = useState(false);
     const gameContainerRef = useRef<HTMLDivElement>(null);
+
+    // Developer mode - only for specific user
+    const isDevMode = user?.email === 'burundu4ok2000@gmail.com';
 
     const {
         gameState,
@@ -18,7 +23,7 @@ export default function RPGPage() {
         resumeGame,
         resetGame,
         nextLevel,
-    } = useRPGGame();
+    } = useRPGGame(isDevMode);
 
     // Show tutorial on first visit
     useEffect(() => {
@@ -277,12 +282,44 @@ export default function RPGPage() {
                         )}
 
                         {/* Tutorial Button (bottom-left) */}
-                        <div className="absolute bottom-4 left-4 pointer-events-auto">
+                        <div className="absolute bottom-4 left-4 flex flex-col gap-2 pointer-events-auto">
                             <button
                                 onClick={() => setShowTutorial(true)}
                                 className="px-4 py-2 bg-yellow-600/90 hover:bg-yellow-700 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm">
                                 ❓ Help
                             </button>
+
+                            {/* Developer Mode Controls */}
+                            {isDevMode && gameState.status === 'playing' && (
+                                <>
+                                    <div className="px-3 py-1 bg-purple-600/90 text-white text-xs font-bold rounded text-center">
+                                        🛠️ DEV MODE
+                                    </div>
+                                    <div className="px-3 py-1 bg-green-600/90 text-white text-xs font-bold rounded text-center">
+                                        ⚡ GOD MODE
+                                    </div>
+                                    <div className="flex gap-2">
+                                        <button
+                                            onClick={() => {
+                                                const currentId = gameState.currentLevel?.data.id || 1;
+                                                if (currentId > 1) startGame(currentId - 1);
+                                            }}
+                                            disabled={(gameState.currentLevel?.data.id || 1) <= 1}
+                                            className="px-3 py-2 bg-blue-600/90 hover:bg-blue-700 disabled:bg-gray-500/50 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm text-xs">
+                                            ← Prev
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                const currentId = gameState.currentLevel?.data.id || 1;
+                                                if (currentId < 20) startGame(currentId + 1);
+                                            }}
+                                            disabled={(gameState.currentLevel?.data.id || 1) >= 20}
+                                            className="px-3 py-2 bg-blue-600/90 hover:bg-blue-700 disabled:bg-gray-500/50 text-white font-bold rounded-lg shadow-lg transition-all backdrop-blur-sm text-xs">
+                                            Next →
+                                        </button>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </div>
 
